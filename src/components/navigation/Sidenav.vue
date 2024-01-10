@@ -1,23 +1,29 @@
 <template>
   <ul class="sidenav app-sidenav open">
-    <li>
-      <a href="#" class="waves-effect waves-orange pointer">Счет</a>
-    </li>
-    <li>
-      <a href="#" class="waves-effect waves-orange pointer">История</a>
-    </li>
-    <li>
-      <a href="#" class="waves-effect waves-orange pointer">Планирование</a>
-    </li>
-    <li>
-      <a href="#" class="waves-effect waves-orange pointer">Новая запись</a>
-    </li>
-    <li>
-      <a href="#" class="waves-effect waves-orange pointer">Категории</a>
+    <li v-for="item in navigationItems" :key="item.path" :class="{ active: $route.path === item.path }">
+      <a
+        class="waves-effect waves-orange pointer"
+        @click="navigateTo(item.path)"
+        >{{ item.label }}</a
+      >
     </li>
   </ul>
 </template>
 
-<script setup></script>
+<script setup>
+import { useRouter } from "vue-router";
 
-<style></style>
+const router = useRouter();
+
+const navigationItems = [
+  { label: "Счёт", path: "/" },
+  { label: "История", path: "/history" },
+  { label: "Планирование", path: "/planning" },
+  { label: "Новая запись", path: "/record" },
+  { label: "Категории", path: "/categories" },
+];
+
+function navigateTo(route) {
+  router.push(route);
+}
+</script>
