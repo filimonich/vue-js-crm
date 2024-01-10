@@ -1,8 +1,8 @@
 <template>
   <div class="app-main-layout">
-    <Navbar />
-    <Sidenav />
-    <main class="app-content">
+    <Navbar @toggleSidenav="toggleSidenav" />
+    <Sidenav :isOpen="isSidenavOpen" @toggleSidenav="toggleSidenav" />
+    <main :class="contentClass">
       <div class="app-page">
         <router-view></router-view>
       </div>
@@ -11,6 +11,20 @@
 </template>
 
 <script setup>
+import { ref, watch } from "vue";
 import Navbar from "@/components/navigation/Navbar";
 import Sidenav from "@/components/navigation/Sidenav";
+
+const isSidenavOpen = ref(true);
+const isFullContent = ref(false);
+const contentClass = ref("app-content");
+
+const toggleSidenav = () => {
+  isSidenavOpen.value = !isSidenavOpen.value;
+  isFullContent.value = !isFullContent.value;
+};
+
+watch(isFullContent, newValue => {
+  contentClass.value = newValue ? "app-content full" : "app-content";
+});
 </script>

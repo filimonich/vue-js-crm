@@ -2,7 +2,7 @@
   <nav class="navbar orange lighten-1">
     <div class="nav-wrapper">
       <div class="navbar-left">
-        <a href="#">
+        <a href="#" @click="toggleSidenav">
           <i class="material-icons black-text">dehaze</i>
         </a>
         <span class="black-text">12.12.24</span>
@@ -38,8 +38,19 @@
   </nav>
 </template>
 
-<script>
-export default {};
-</script>
+<script setup>
+import { getCurrentInstance, onMounted } from "vue";
 
-<style></style>
+let instance;
+
+onMounted(() => {
+  instance = getCurrentInstance();
+});
+
+const toggleSidenav = () => {
+  if (instance) {
+    const { emit } = instance;
+    emit("toggleSidenav");
+  }
+};
+</script>
