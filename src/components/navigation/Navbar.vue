@@ -5,7 +5,7 @@
         <a href="#" @click="toggleSidenav">
           <i class="material-icons black-text">dehaze</i>
         </a>
-        <span class="black-text">12.12.24</span>
+        <span class="black-text">{{ formattedDate }}</span>
       </div>
 
       <ul class="right hide-on-small-and-down">
@@ -39,13 +39,30 @@
 </template>
 
 <script setup>
-import { getCurrentInstance, onMounted } from "vue";
+import { getCurrentInstance, onMounted, ref } from "vue";
 
 let instance;
+const formattedDate = ref("");
 
 onMounted(() => {
   instance = getCurrentInstance();
+  setInterval(updateFormattedDate, 1000);
 });
+
+const updateFormattedDate = () => {
+  const currentDate = new Date();
+
+  const options = {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    weekday: "long",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  };
+  formattedDate.value = currentDate.toLocaleDateString("ru-RU", options);
+};
 
 const toggleSidenav = () => {
   if (instance) {

@@ -1,7 +1,7 @@
 <template>
   <div class="app-main-layout">
     <Navbar @toggleSidenav="toggleSidenav" />
-    <Sidenav :isOpen="isSidenavOpen" @toggleSidenav="toggleSidenav" />
+    <Sidenav :isOpen="isSidenavOpen" />
     <main :class="contentClass">
       <div class="app-page">
         <router-view></router-view>
