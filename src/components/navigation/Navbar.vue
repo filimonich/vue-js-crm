@@ -40,29 +40,16 @@
 
 <script setup>
 import { getCurrentInstance, onMounted, ref } from "vue";
+import { updateFormattedDate } from "@/utils/dateUtils";
 
 let instance;
 const formattedDate = ref("");
 
 onMounted(() => {
   instance = getCurrentInstance();
+  updateFormattedDate();
   setInterval(updateFormattedDate, 1000);
 });
-
-const updateFormattedDate = () => {
-  const currentDate = new Date();
-
-  const options = {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-    weekday: "long",
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-  };
-  formattedDate.value = currentDate.toLocaleDateString("ru-RU", options);
-};
 
 const toggleSidenav = () => {
   if (instance) {
