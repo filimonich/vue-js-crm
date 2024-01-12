@@ -1,16 +1,60 @@
 <template>
-  <form class="card auth-card">
+  <form class="card auth-card" @submit.prevent="onSubmit">
     <div class="card-content">
       <span class="card-title">Домашняя бухгалтерия</span>
       <div class="input-field">
-        <input id="email" type="text" class="validate" />
+        <input
+          id="email"
+          type="text"
+          v-model.trim="form.email"
+          :class="{
+            invalid:
+              v$.form.email.$dirty &&
+              !v$.form.email.$pending &&
+              v$.form.email.$error,
+          }"
+          v-model="v$.form.email.$model"
+        />
         <label for="email">Email</label>
-        <small class="helper-text invalid">Email</small>
+        <small
+          class="helper-text"
+          v-for="(error, index) of v$.form.email.$errors"
+          :key="index"
+          :class="{
+            invalid:
+              v$.form.email.$dirty &&
+              !v$.form.email.$pending &&
+              v$.form.email.$error,
+          }"
+          >{{ error.$message }}</small
+        >
       </div>
       <div class="input-field">
-        <input id="password" type="password" class="validate" />
+        <input
+          id="password"
+          type="password"
+          v-model.trim="form.password"
+          :class="{
+            invalid:
+              v$.form.password.$dirty &&
+              !v$.form.password.$pending &&
+              v$.form.password.$error,
+          }"
+          v-model="v$.form.password.$model"
+        />
         <label for="password">Пароль</label>
-        <small class="helper-text invalid">Password</small>
+        <small
+          class="helper-text"
+          v-for="(error, index) of v$.form.password.$errors"
+          :key="index"
+          :class="{
+            invalid:
+              v$.form.password.$dirty &&
+              !v$.form.password.$pending &&
+              v$.form.password.$error,
+          }"
+          >{{ error.$message }}</small
+        >
       </div>
     </div>
     <div class="card-action">
@@ -23,14 +67,48 @@
 
       <p class="center">
         Нет аккаунта?
-        <a href="/">Зарегистрироваться</a>
+        <router-link to="/register">Зарегистрироваться</router-link>
       </p>
     </div>
   </form>
 </template>
 
 <script>
-export default {};
-</script>
+import useVuelidate from "@vuelidate/core";
+import {
+  getEmailValidationRules,
+  getPasswordValidationRules,
+} from "@/validation/validationRules";
 
-<style></style>
+export default {
+  setup() {
+    return { v$: useVuelidate() };
+  },
+
+  data() {
+    return {
+      form: {
+        email: "",
+        password: "",
+      },
+    };
+  },
+
+  validations() {
+    return {
+      form: {
+        email: getEmailValidationRules(),
+        password: getPasswordValidationRules(),
+      },
+    };
+  },
+  methods: {
+    onSubmit() {
+      if (this.v$.$invalid) {
+        return;
+      }
+      console.log(this.form);
+    },
+  },
+};
+</script>
