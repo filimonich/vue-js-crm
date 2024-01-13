@@ -27,9 +27,9 @@
             </li>
             <li class="divider" tabindex="-1"></li>
             <li>
-              <a href="#" class="black-text">
+              <router-link to="/login" class="black-text" @click="logout">
                 <i class="material-icons">assignment_return</i>Выйти
-              </a>
+              </router-link>
             </li>
           </ul>
         </li>
@@ -44,11 +44,14 @@ import { updateFormattedDate } from "@/utils/dateUtils";
 
 let instance;
 const formattedDate = ref("");
+let intervalId;
 
 onMounted(() => {
   instance = getCurrentInstance();
-  updateFormattedDate();
-  setInterval(updateFormattedDate, 1000);
+  formattedDate.value = updateFormattedDate();
+  intervalId = setInterval(() => {
+    formattedDate.value = updateFormattedDate();
+  }, 1000);
 
   const dropdownElement = document.querySelector(".dropdown-trigger");
   M.Dropdown.init(dropdownElement);
@@ -59,5 +62,10 @@ const toggleSidenav = () => {
     const { emit } = instance;
     emit("toggleSidenav");
   }
+};
+
+const logout = () => {
+  clearInterval(intervalId);
+  console.log("logout");
 };
 </script>
