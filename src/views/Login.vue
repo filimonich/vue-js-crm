@@ -79,6 +79,7 @@ import {
   getEmailValidationRules,
   getPasswordValidationRules,
 } from "@/validation/validationRules";
+import messages from "@/utils/messages";
 
 export default {
   setup() {
@@ -102,12 +103,17 @@ export default {
       },
     };
   },
+  mounted() {
+    const message = this.$route.query.message;
+    if (messages[message]) {
+      this.$message(messages[message]);
+    }
+  },
   methods: {
     onSubmit() {
       if (this.v$.$invalid) {
         return;
       }
-      console.log(this.form);
     },
   },
 };

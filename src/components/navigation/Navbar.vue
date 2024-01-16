@@ -27,12 +27,7 @@
             </li>
             <li class="divider" tabindex="-1"></li>
             <li>
-              <router-link
-                to="/login"
-                class="black-text"
-                @click="logout"
-                v-show-toast="messages.logout"
-              >
+              <router-link to="/login" class="black-text" @click="logout">
                 <i class="material-icons">assignment_return</i>Выйти
               </router-link>
             </li>
@@ -46,7 +41,9 @@
 <script setup>
 import { getCurrentInstance, onMounted, ref } from "vue";
 import { updateFormattedDate } from "@/utils/date.utils";
-import { messages } from "@/utils/messages";
+import messages from "@/utils/messages";
+import { useRouter } from "vue-router";
+const router = useRouter();
 
 let instance;
 const formattedDate = ref("");
@@ -73,5 +70,6 @@ const toggleSidenav = () => {
 const logout = () => {
   clearInterval(intervalId);
   console.log(messages.logout);
+  router.push("/login?message=logout");
 };
 </script>

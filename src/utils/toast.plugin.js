@@ -1,29 +1,10 @@
-// const showToast = (el, binding) => {
-//   const message = binding.value;
-//   M.toast({ html: message });
-// };
-
-// export const showLogoutToast = {
-//   mounted(el, binding) {
-//     el.addEventListener("click", () => {
-//       showToast(el, binding);
-//     });
-//   },
-// };
-
-// export const install = app => {
-//   app.directive("show-toast", showLogoutToast);
-// };
-const showToast = message => {
-  M.toast({ html: message });
-};
-
-export const showLogoutToastDirective = {
-  mounted(el, binding) {
-    el.addEventListener("click", () => showToast(binding.value));
+export default {
+  install(app, options) {
+    app.config.globalProperties.$message = html => {
+      M.toast({ html });
+    };
+    app.config.globalProperties.$error = html => {
+      M.toast({ html: `[Ошибка]: ${html}` });
+    };
   },
 };
-
-export function install(app) {
-  app.directive("show-toast", showLogoutToastDirective);
-}
