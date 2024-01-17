@@ -110,10 +110,20 @@ export default {
     }
   },
   methods: {
-    onSubmit() {
+   async onSubmit() {
+      console.log("this.v$ :",this.v$);
       if (this.v$.$invalid) {
+        this.v$.$touch();
         return;
       }
+
+      try {
+        await this.$store.dispatch("login", {
+          email: this.form.email,
+          password: this.form.password,
+        })
+        this.$router.push("/");
+      } catch (e) {}
     },
   },
 };

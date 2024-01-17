@@ -148,7 +148,6 @@ export default {
         email: this.form.email,
         password: this.form.password,
       };
-
       try {
         await this.$store.dispatch("register", formData);
         this.$router.push("/");

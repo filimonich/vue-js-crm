@@ -64,6 +64,8 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
+  console.log("getAuth", getAuth());
+  console.log("to", to);
   const auth = getAuth();
   const currentUser = auth.currentUser;
   const requireAuth = to.meta.auth;
