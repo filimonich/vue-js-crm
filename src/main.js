@@ -6,8 +6,28 @@ import store from "./store";
 import "materialize-css/dist/js/materialize.min";
 import tooltipDirective from "@/directives/tooltip.directive";
 
-const app = createApp(App);
-app.directive("tooltip", tooltipDirective);
-app.use(store);
-app.use(router);
-app.mount("#app");
+import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBeE9suWVOudy-hB6wo647qCzkbwdGH2iU",
+  authDomain: "vue-js-crm-fss.firebaseapp.com",
+  databaseURL:
+    "https://vue-js-crm-fss-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "vue-js-crm-fss",
+  storageBucket: "vue-js-crm-fss.appspot.com",
+  messagingSenderId: "985711851326",
+  appId: "1:985711851326:web:dffa5392f87142a7159e6f",
+  measurementId: "G-T9T8BVEQFB",
+};
+
+initializeApp(firebaseConfig);
+
+const auth = getAuth();
+
+const vueApp = createApp(App);
+vueApp.directive("tooltip", tooltipDirective);
+vueApp.use(store);
+vueApp.use(router);
+vueApp.provide("auth", auth);
+vueApp.mount("#app");

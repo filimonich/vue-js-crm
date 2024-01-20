@@ -103,11 +103,20 @@ export default {
     };
   },
   methods: {
-    onSubmit() {
+    async onSubmit() {
       if (this.v$.$invalid) {
+        this.v$.$touch();
         return;
       }
       console.log(this.form);
+
+      try {
+        await this.$store.dispatch("auth/login", {
+          email: this.form.email,
+          password: this.form.password,
+        });
+        this.$router.push("/");
+      } catch (e) {}
     },
   },
 };

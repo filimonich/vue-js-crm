@@ -139,7 +139,8 @@ export default {
   },
   methods: {
     onSubmit() {
-      if (!this.form.agreeWithRules) {
+      if (this.v$.$invalid) {
+        this.v$.$touch();
         return;
       }
       console.log(this.form);
