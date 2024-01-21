@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+import { useStore } from "vuex";
 
 const routes = [
   {
@@ -60,6 +61,20 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  const store = useStore();
+  const isAuthenticated = store.state.auth.user;
+  const isPublicPage = to.matched.some(
+    record => record.meta.layout === "empty"
+  );
+
+  if (!isAuthenticated && !isPublicPage) {
+    next({ name: "login" });
+  } else {
+    next();
+  }
 });
 
 export default router;

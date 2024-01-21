@@ -39,12 +39,16 @@
 </template>
 
 <script setup>
+import { useStore } from "vuex"; // Импортируем useStore
+import { useRouter } from "vue-router";
 import { getCurrentInstance, onMounted, ref } from "vue";
 import { updateFormattedDate } from "@/utils/dateUtils";
 
 let instance;
-const formattedDate = ref("");
 let intervalId;
+const formattedDate = ref("");
+const store = useStore();
+const router = useRouter();
 
 onMounted(() => {
   instance = getCurrentInstance();
@@ -64,8 +68,10 @@ const toggleSidenav = () => {
   }
 };
 
-const logout = () => {
+const logout = async () => {
   clearInterval(intervalId);
-  console.log("logout");
+  console.log("logout :", store);
+  router.push({ name: "login", query: { loggedOut: "true" } });
+  await store.dispatch("auth/logout");
 };
 </script>
