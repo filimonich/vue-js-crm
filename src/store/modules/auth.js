@@ -1,22 +1,20 @@
 import { getAuth, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import Cookies from "js-cookie";
 
 export default {
   namespaced: true,
   state() {
     return {
       user: null,
-      isLoggedIn: false,
       authError: null,
     };
   },
   mutations: {
     setUser(state, user) {
       state.user = user;
-      state.isLoggedIn = !!user;
     },
     clearUser(state) {
       state.user = null;
-      state.isLoggedIn = false;
     },
     setAuthError(state, error) {
       state.authError = error;
@@ -27,11 +25,10 @@ export default {
   },
   getters: {
     user: s => s.user,
-    isLoggedIn: s => s.isLoggedIn,
     authError: s => s.authError,
   },
   actions: {
-    async login({ dispatch }, { email, password }) {
+    async login({ dispatch, commit }, { email, password }) {
       try {
         const auth = getAuth();
         const userCredential = await signInWithEmailAndPassword(
@@ -39,6 +36,11 @@ export default {
           email,
           password
         );
+        const token = await userCredential.user.getIdToken();
+        Cookies.set("auth-token", token, {
+          expires: 7,
+          secure: true,
+        });
         dispatch("setUserAndClearError", userCredential.user);
       } catch (e) {
         console.error("Ошибка при входе", e);
@@ -46,11 +48,12 @@ export default {
         throw e;
       }
     },
-    async logout({ dispatch }) {
+    async logout({ dispatch, commit }) {
       try {
         const auth = getAuth();
         await signOut(auth);
-        dispatch("clearUserAndError");
+        Cookies.remove("auth-token");
+        dispatch("clearUserAndClearError");
       } catch (e) {
         console.error("Ошибка при выходе", e);
         commit("setAuthError", e);
@@ -61,7 +64,7 @@ export default {
       commit("setUser", user);
       commit("clearAuthError");
     },
-    clearUserAndError({ commit }) {
+    clearUserAndClearError({ commit }) {
       commit("clearUser");
       commit("clearAuthError");
     },

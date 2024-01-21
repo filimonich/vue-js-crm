@@ -108,7 +108,6 @@ export default {
         this.v$.$touch();
         return;
       }
-      console.log(this.form);
 
       try {
         await this.$store.dispatch("auth/login", {
