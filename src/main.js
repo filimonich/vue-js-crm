@@ -26,8 +26,8 @@ initializeApp(firebaseConfig);
 const auth = getAuth();
 
 const vueApp = createApp(App);
-vueApp.directive("tooltip", tooltipDirective);
 vueApp.use(store);
 vueApp.use(router);
+vueApp.directive("tooltip", tooltipDirective);
 vueApp.provide("auth", auth);
 vueApp.mount("#app");

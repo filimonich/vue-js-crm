@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-import { useStore } from "vuex";
+import Cookies from "js-cookie";
 
 const routes = [
   {
@@ -64,8 +64,7 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  const store = useStore();
-  const isAuthenticated = store.state.auth.user;
+  const isAuthenticated = Cookies.get("auth-token");
   const isPublicPage = to.matched.some(
     record => record.meta.layout === "empty"
   );
