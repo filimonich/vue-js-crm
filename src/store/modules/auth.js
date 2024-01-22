@@ -43,8 +43,7 @@ export default {
         });
         dispatch("setUserAndClearError", userCredential.user);
       } catch (e) {
-        console.error("Ошибка при входе", e);
-        commit("setAuthError", e);
+        commit("setAuthError", e.code);
         throw e;
       }
     },

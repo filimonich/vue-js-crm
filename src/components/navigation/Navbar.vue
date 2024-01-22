@@ -39,11 +39,13 @@
 </template>
 
 <script setup>
-import { useStore } from "vuex"; // Импортируем useStore
+import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import { getCurrentInstance, onMounted, ref } from "vue";
 import { updateFormattedDate } from "@/utils/dateUtils";
+import messages from "@/utils/messages";
 
+const { proxy } = getCurrentInstance();
 let instance;
 let intervalId;
 const formattedDate = ref("");
@@ -73,5 +75,6 @@ const logout = async () => {
   console.log("logout :", store);
   router.push({ name: "login", query: { loggedOut: "true" } });
   await store.dispatch("auth/logout");
+  proxy.$showToast(messages.logout);
 };
 </script>

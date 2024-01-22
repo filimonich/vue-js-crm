@@ -3,9 +3,11 @@ import App from "./App.vue";
 import "./registerServiceWorker";
 import router from "./router";
 import store from "./store";
+import "jquery";
+import "materialize-css";
 import "materialize-css/dist/js/materialize.min";
 import tooltipDirective from "@/directives/tooltip.directive";
-
+import ToastUtil from "@/utils/toast.util";
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 
@@ -22,12 +24,16 @@ const firebaseConfig = {
 };
 
 initializeApp(firebaseConfig);
-
 const auth = getAuth();
 
 const vueApp = createApp(App);
 vueApp.use(store);
 vueApp.use(router);
+vueApp.use(ToastUtil);
 vueApp.directive("tooltip", tooltipDirective);
 vueApp.provide("auth", auth);
 vueApp.mount("#app");
+
+document.addEventListener("DOMContentLoaded", function () {
+  M.AutoInit();
+});
