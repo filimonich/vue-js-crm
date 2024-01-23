@@ -1,6 +1,6 @@
 export default {
   logout: "Вы вышли из системы",
-  login: "Для начала войдите в систему",
-  "auth/invalid-credential": "Несущесвующий логин или пароль",
-  "auth/email-already-in-use": "Email уже занят",
+  login: "Вы вошли в систему",
+  "auth/invalid-credential": "Неправильное имя пользователя или пароль",
+  "auth/too-many-requests": "Слишком много попыток",
 };

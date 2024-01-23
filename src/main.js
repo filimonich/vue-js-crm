@@ -3,13 +3,13 @@ import App from "./App.vue";
 import "./registerServiceWorker";
 import router from "./router";
 import store from "./store";
-import "materialize-css/dist/js/materialize.min.js";
+import "jquery";
+import "materialize-css";
+import "materialize-css/dist/js/materialize.min";
 import tooltipDirective from "@/directives/tooltip.directive";
-// import { install as installToastPlugin } from "@/utils/toast.plugin.js";
-import toastPlugin from "@/utils/toast.plugin";
-
+import ToastUtil from "@/utils/toast.util";
 import { initializeApp } from "firebase/app";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBeE9suWVOudy-hB6wo647qCzkbwdGH2iU",
@@ -23,19 +23,17 @@ const firebaseConfig = {
   measurementId: "G-T9T8BVEQFB",
 };
 
-let app;
+initializeApp(firebaseConfig);
+const auth = getAuth();
 
-const firebaseApp = initializeApp(firebaseConfig);
-const auth = getAuth(firebaseApp);
+const vueApp = createApp(App);
+vueApp.use(store);
+vueApp.use(router);
+vueApp.use(ToastUtil);
+vueApp.directive("tooltip", tooltipDirective);
+vueApp.provide("auth", auth);
+vueApp.mount("#app");
 
-onAuthStateChanged(auth, user => {
-  if (!app) {
-    app = createApp(App);
-    app.use(toastPlugin);
-    // installToastPlugin(app);
-    app.directive("tooltip", tooltipDirective);
-    app.use(store);
-    app.use(router);
-    app.mount("#app");
-  }
+document.addEventListener("DOMContentLoaded", function () {
+  M.AutoInit();
 });

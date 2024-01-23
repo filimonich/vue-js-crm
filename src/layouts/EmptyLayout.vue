@@ -4,19 +4,22 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import messages from "@/utils/messages";
+import { ref, watch, getCurrentInstance } from "vue";
+import { useStore } from "vuex";
 
-export default {
-  computed: {
-    error() {
-      return this.$store.getters.error;
-    },
-  },
-  watch: {
-    error(fbError) {
-      this.$error(messages[fbError.code] || "Что-то пошло не так");
-    },
-  },
-};
+const store = useStore();
+const authError = ref("");
+const { proxy } = getCurrentInstance();
+
+watch(
+  () => store.state.auth.authError,
+  newError => {
+    try {
+      proxy.$handleError(messages[newError]);
+      store.commit("auth/clearAuthError");
+    } catch (e) {}
+  }
+);
 </script>

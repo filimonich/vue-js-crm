@@ -111,14 +111,13 @@ export default {
   },
   methods: {
     async onSubmit() {
-      console.log("this.v$ :", this.v$);
       if (this.v$.$invalid) {
         this.v$.$touch();
         return;
       }
 
       try {
-        await this.$store.dispatch("login", {
+        await this.$store.dispatch("auth/login", {
           email: this.form.email,
           password: this.form.password,
         });
