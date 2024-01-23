@@ -42,16 +42,15 @@
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import { getCurrentInstance, onMounted, ref } from "vue";
-import { updateFormattedDate } from "@/utils/dateUtils";
+import { updateFormattedDate } from "@/utils/date.utils.js";
 import messages from "@/utils/messages";
-
-const { proxy } = getCurrentInstance();
 
 let instance;
 let intervalId;
 const formattedDate = ref("");
 const store = useStore();
 const router = useRouter();
+const { proxy } = getCurrentInstance();
 
 onMounted(() => {
   instance = getCurrentInstance();

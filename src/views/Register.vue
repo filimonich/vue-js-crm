@@ -138,7 +138,7 @@ export default {
     };
   },
   methods: {
-    onSubmit() {
+    async onSubmit() {
       if (this.v$.$invalid) {
         this.v$.$touch();
         return;
