@@ -5,7 +5,6 @@ import router from "./router";
 import store from "./store";
 import "jquery";
 import "materialize-css";
-import "materialize-css/dist/js/materialize.min";
 import tooltipDirective from "@/directives/tooltip.directive";
 import ToastUtil from "@/utils/toast.util";
 import { initializeApp } from "firebase/app";
