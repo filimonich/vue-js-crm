@@ -1,4 +1,9 @@
-import { getAuth, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  signOut,
+  createUserWithEmailAndPassword,
+} from "firebase/auth";
 import Cookies from "js-cookie";
 
 export default {
@@ -28,6 +33,31 @@ export default {
     authError: s => s.authError,
   },
   actions: {
+    async register({ dispatch, commit }, { email, password, name }) {
+      try {
+        const auth = getAuth();
+        const userCredential = await createUserWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+        const user = userCredential.user;
+        await dispatch(
+          "userProfile/setUserProfile",
+          { userId: user.uid, profileData: { name, bill: 100000 } },
+          { root: true }
+        );
+        const token = await user.getIdToken();
+        Cookies.set("auth-token", token, {
+          expires: 7,
+          secure: true,
+        });
+        dispatch("setUserAndClearError", user);
+      } catch (e) {
+        commit("setAuthError", e.code);
+        throw e;
+      }
+    },
     async login({ dispatch, commit }, { email, password }) {
       try {
         const auth = getAuth();

@@ -1,5 +1,6 @@
 import { createStore } from "vuex";
 import auth from "./modules/auth";
+import userProfile from "./modules/userProfile";
 
 export default createStore({
   state: {
@@ -19,5 +20,6 @@ export default createStore({
   actions: {},
   modules: {
     auth,
+    userProfile,
   },
 });

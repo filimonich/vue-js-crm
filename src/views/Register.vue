@@ -149,7 +149,11 @@ export default {
         password: this.form.password,
       };
       try {
-        await this.$store.dispatch("register", formData);
+        await this.$store.dispatch("auth/register", {
+          email: this.form.email,
+          password: this.form.password,
+          name: this.form.name,
+        });
         this.$router.push("/");
       } catch (e) {}
     },
