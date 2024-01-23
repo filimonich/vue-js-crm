@@ -3,12 +3,19 @@ import auth from "./modules/auth";
 
 export default createStore({
   state: {
-    info: {},
+    error: null,
   },
   getters: {
     error: s => s.error,
   },
-  mutations: {},
+  mutations: {
+    setError(state, error) {
+      state.error = error;
+    },
+    clearError(state) {
+      state.error = null;
+    },
+  },
   actions: {},
   modules: {
     auth,

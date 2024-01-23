@@ -79,6 +79,7 @@ import {
   getEmailValidationRules,
   getPasswordValidationRules,
 } from "@/validation/validationRules";
+import messages from "@/utils/messages";
 
 export default {
   setup() {
@@ -101,6 +102,12 @@ export default {
         password: getPasswordValidationRules(),
       },
     };
+  },
+  mounted() {
+    const message = this.$route.query.message;
+    if (messages[message]) {
+      this.$message(messages[message]);
+    }
   },
   methods: {
     async onSubmit() {

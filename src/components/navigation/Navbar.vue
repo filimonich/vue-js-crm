@@ -46,6 +46,7 @@ import { updateFormattedDate } from "@/utils/dateUtils";
 import messages from "@/utils/messages";
 
 const { proxy } = getCurrentInstance();
+
 let instance;
 let intervalId;
 const formattedDate = ref("");

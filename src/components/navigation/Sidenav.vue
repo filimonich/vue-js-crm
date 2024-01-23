@@ -1,6 +1,6 @@
 <template>
   <!-- <ul class="sidenav app-sidenav open"> -->
-    <ul class="sidenav app-sidenav" :class="{ open: isOpen }">
+  <ul class="sidenav app-sidenav" :class="{ open: isOpen }">
     <li
       v-for="item in navigationItems"
       :key="item.path"
@@ -20,7 +20,7 @@ import { useRouter } from "vue-router";
 import { defineProps } from "vue";
 
 const router = useRouter();
-const props = defineProps(['isOpen']);
+const props = defineProps(["isOpen"]);
 
 const navigationItems = [
   { label: "Счёт", path: "/" },

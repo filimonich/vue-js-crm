@@ -143,7 +143,15 @@ export default {
         this.v$.$touch();
         return;
       }
-      console.log(this.form);
+      const formData = {
+        name: this.form.name,
+        email: this.form.email,
+        password: this.form.password,
+      };
+      try {
+        await this.$store.dispatch("register", formData);
+        this.$router.push("/");
+      } catch (e) {}
     },
   },
 };
