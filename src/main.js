@@ -6,7 +6,7 @@ import store from "./store";
 import "jquery";
 import "materialize-css";
 import tooltipDirective from "@/directives/tooltip.directive";
-import ToastUtil from "@/utils/toast.util";
+import ToastUtil from "@/plugins/toast.plugin";
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 

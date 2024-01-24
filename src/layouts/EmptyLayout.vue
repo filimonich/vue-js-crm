@@ -5,7 +5,7 @@
 </template>
 
 <script setup>
-import messages from "@/utils/messages";
+import messages from "@/plugins/messages";
 import { ref, watch, getCurrentInstance } from "vue";
 import { useStore } from "vuex";
 

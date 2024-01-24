@@ -79,7 +79,7 @@ import {
   getEmailValidationRules,
   getPasswordValidationRules,
 } from "@/validation/validationRules";
-import messages from "@/utils/messages";
+import messages from "@/plugins/messages";
 
 export default {
   setup() {

@@ -43,7 +43,7 @@ import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import { getCurrentInstance, onMounted, ref } from "vue";
 import { updateFormattedDate } from "@/utils/date.utils.js";
-import messages from "@/utils/messages";
+import messages from "@/plugins/messages";
 
 let instance;
 let intervalId;
