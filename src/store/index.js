@@ -1,6 +1,5 @@
 import { createStore } from "vuex";
 import auth from "./modules/auth";
-import userProfile from "./modules/userProfile";
 import currency from "./modules/currency";
 
 export default createStore({
@@ -21,7 +20,6 @@ export default createStore({
   actions: {},
   modules: {
     auth,
-    userProfile,
     currency,
   },
 });

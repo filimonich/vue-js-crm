@@ -4,6 +4,7 @@ import {
   signOut,
   createUserWithEmailAndPassword,
 } from "firebase/auth";
+import { getDatabase, ref, set } from "firebase/database";
 import Cookies from "js-cookie";
 
 export default {
@@ -41,17 +42,18 @@ export default {
           email,
           password
         );
+
         const user = userCredential.user;
-        await dispatch(
-          "userProfile/setUserProfile",
-          { userId: user.uid, profileData: { name, bill: 100000 } },
-          { root: true }
-        );
+        const db = getDatabase();
+        const profileData = { name, bill: 100000 };
+        await set(ref(db, "users/" + user.uid), profileData);
+
         const token = await user.getIdToken();
         Cookies.set("auth-token", token, {
           expires: 7,
           secure: true,
         });
+
         dispatch("setUserAndClearError", user);
       } catch (e) {
         commit("setAuthError", e.code);
