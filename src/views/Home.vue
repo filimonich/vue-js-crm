@@ -37,10 +37,10 @@
               </thead>
 
               <tbody>
-                <tr>
-                  <td>руб</td>
-                  <td>12121</td>
-                  <td>12.12.12</td>
+                <tr v-for="(rate, currency) in rates" :key="currency">
+                  <td>{{ currency }}</td>
+                  <td>{{ rate.toFixed(4) }}</td>
+                  <td>{{ formattedDate }}</td>
                 </tr>
               </tbody>
             </table>
@@ -51,8 +51,20 @@
   </div>
 </template>
 
-<script>
-export default {};
-</script>
+<script setup>
+import { useStore } from "vuex";
+import { onMounted, computed } from "vue";
 
-<style></style>
+const store = useStore();
+
+const rates = computed(() => store.getters["rates"]);
+
+const formattedDate = computed(() => {
+  const timestamp = store.getters["timestamp"];
+  return timestamp ? new Date(timestamp * 1000).toLocaleDateString() : null;
+});
+
+onMounted(async () => {
+  await store.dispatch("fetchRate");
+});
+</script>
