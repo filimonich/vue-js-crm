@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Cookies from "js-cookie";
+import { getAuth } from "firebase/auth";
 
 const routes = [
   {
@@ -64,12 +64,12 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  const isAuthenticated = Cookies.get("auth-token");
-  const isPublicPage = to.matched.some(
-    record => record.meta.layout === "empty"
-  );
+  const auth = getAuth();
+  const requiresAuth = to.matched.some(record => record.meta.auth);
+  const isAuthenticated = auth.currentUser;
 
-  if (!isAuthenticated && !isPublicPage) {
+  if (requiresAuth && !isAuthenticated) {
+    console.log("Redirecting to login...");
     next({ name: "login" });
   } else {
     next();

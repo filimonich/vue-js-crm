@@ -8,7 +8,7 @@ import "materialize-css";
 import tooltipDirective from "@/directives/tooltip.directive";
 import ToastUtil from "@/plugins/toast.plugin";
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBeE9suWVOudy-hB6wo647qCzkbwdGH2iU",
@@ -22,16 +22,22 @@ const firebaseConfig = {
   measurementId: "G-T9T8BVEQFB",
 };
 
-initializeApp(firebaseConfig);
-const auth = getAuth();
+const firebaseApp = initializeApp(firebaseConfig);
+const auth = getAuth(firebaseApp);
+let app;
 
-const vueApp = createApp(App);
-vueApp.use(store);
-vueApp.use(router);
-vueApp.use(ToastUtil);
-vueApp.directive("tooltip", tooltipDirective);
-vueApp.provide("auth", auth);
-vueApp.mount("#app");
+onAuthStateChanged(auth, user => {
+  store.dispatch("auth/fetchUserData");
+  if (!app) {
+    app = createApp(App);
+    app.use(store);
+    app.use(router);
+    app.use(ToastUtil);
+    app.directive("tooltip", tooltipDirective);
+    app.provide("auth", auth);
+    app.mount("#app");
+  }
+});
 
 document.addEventListener("DOMContentLoaded", function () {
   M.AutoInit();

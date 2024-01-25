@@ -19,6 +19,7 @@ const currencyModule = {
       try {
         const response = await axios.get(
           "https://openexchangerates.org/api/latest.json",
+          // "https://openexchangerates.org/api/latest.jso",
           {
             params: {
               app_id: apiKey,
@@ -26,7 +27,6 @@ const currencyModule = {
             },
           }
         );
-        console.log("API response:", response);
         commit("SET_RATES", response.data.rates);
         commit("SET_TIMESTAMP", response.data.timestamp);
       } catch (e) {

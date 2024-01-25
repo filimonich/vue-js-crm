@@ -3,24 +3,30 @@ import {
   signInWithEmailAndPassword,
   signOut,
   createUserWithEmailAndPassword,
+  onAuthStateChanged,
 } from "firebase/auth";
-import { getDatabase, ref, set } from "firebase/database";
-import Cookies from "js-cookie";
+import { getDatabase, ref, set, get } from "firebase/database";
 
 export default {
   namespaced: true,
   state() {
     return {
       user: null,
+      name: null,
+      bill: null,
       authError: null,
     };
   },
   mutations: {
-    setUser(state, user) {
+    setUser(state, { user, name, bill }) {
       state.user = user;
+      state.name = name;
+      state.bill = bill;
     },
     clearUser(state) {
       state.user = null;
+      state.name = null;
+      state.bill = null;
     },
     setAuthError(state, error) {
       state.authError = error;
@@ -31,73 +37,94 @@ export default {
   },
   getters: {
     user: s => s.user,
+    name: s => s.name,
+    bill: s => s.bill,
     authError: s => s.authError,
   },
   actions: {
-    async register({ dispatch, commit }, { email, password, name }) {
+    async login({ commit }, { email, password }) {
+      const auth = getAuth();
       try {
-        const auth = getAuth();
-        const userCredential = await createUserWithEmailAndPassword(
-          auth,
-          email,
-          password
-        );
-
-        const user = userCredential.user;
-        const db = getDatabase();
-        const profileData = { name, bill: 100000 };
-        await set(ref(db, "users/" + user.uid), profileData);
-
-        const token = await user.getIdToken();
-        Cookies.set("auth-token", token, {
-          expires: 7,
-          secure: true,
-        });
-
-        dispatch("setUserAndClearError", user);
-      } catch (e) {
-        commit("setAuthError", e.code);
-        throw e;
-      }
-    },
-    async login({ dispatch, commit }, { email, password }) {
-      try {
-        const auth = getAuth();
         const userCredential = await signInWithEmailAndPassword(
           auth,
           email,
           password
         );
-        const token = await userCredential.user.getIdToken();
-        Cookies.set("auth-token", token, {
-          expires: 7,
-          secure: true,
-        });
-        dispatch("setUserAndClearError", userCredential.user);
+        const user = userCredential.user;
+
+        const database = getDatabase();
+        const userRef = ref(database, "users/" + user.uid);
+
+        const snapshot = await get(userRef);
+        if (snapshot.exists()) {
+          const userData = snapshot.val();
+          const name = userData.name;
+          const bill = userData.bill;
+          commit("setUser", { user, name, bill });
+        } else {
+          console.error("No data available for user: " + user.uid);
+          commit("setAuthError", "No data available");
+        }
+        commit("clearAuthError");
       } catch (e) {
         commit("setAuthError", e.code);
         throw e;
       }
     },
-    async logout({ dispatch, commit }) {
+    async register({ commit }, { email, password, name }) {
+      const auth = getAuth();
       try {
-        const auth = getAuth();
+        const userCredential = await createUserWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+        const user = userCredential.user;
+
+        const database = getDatabase();
+        const userRef = ref(database, "users/" + user.uid);
+        await set(userRef, {
+          name: name,
+          bill: 100000,
+        });
+
+        commit("setUser", { user, name, bill: 100000 });
+        commit("clearAuthError");
+      } catch (e) {
+        commit("setAuthError", e.code);
+        throw e;
+      }
+    },
+    async fetchUserData({ commit }) {
+      const auth = getAuth();
+      const user = auth.currentUser;
+      if (user) {
+        const database = getDatabase();
+        const userRef = ref(database, "users/" + user.uid);
+        const snapshot = await get(userRef);
+        if (snapshot.exists()) {
+          const userData = snapshot.val();
+          const name = userData.name;
+          const bill = userData.bill;
+          commit("setUser", { user, name, bill });
+          localStorage.setItem("auth", JSON.stringify({ user, name, bill }));
+        } else {
+          console.error("No data available for user: " + user.uid);
+        }
+      }
+    },
+    async logout({ commit }) {
+      const auth = getAuth();
+      try {
         await signOut(auth);
-        Cookies.remove("auth-token");
-        dispatch("clearUserAndClearError");
+        localStorage.removeItem("auth");
+        commit("clearUser");
+        commit("clearAuthError");
       } catch (e) {
         console.error("Ошибка при выходе", e);
         commit("setAuthError", e);
         throw e;
       }
-    },
-    setUserAndClearError({ commit }, user) {
-      commit("setUser", user);
-      commit("clearAuthError");
-    },
-    clearUserAndClearError({ commit }) {
-      commit("clearUser");
-      commit("clearAuthError");
     },
   },
 };
