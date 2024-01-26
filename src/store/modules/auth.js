@@ -3,7 +3,6 @@ import {
   signInWithEmailAndPassword,
   signOut,
   createUserWithEmailAndPassword,
-  onAuthStateChanged,
 } from "firebase/auth";
 import { getDatabase, ref, set, get } from "firebase/database";
 

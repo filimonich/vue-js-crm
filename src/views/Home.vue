@@ -15,7 +15,13 @@
             <span class="card-title">Счет в валюте</span>
 
             <p class="currency-line">
-              <span>12.0 Р</span>
+              <span>{{ formatCurrency(bill, "RUB") }}</span>
+            </p>
+            <p class="currency-line">
+              <span>{{ formatCurrency(accountInEUR, "EUR") }}</span>
+            </p>
+            <p class="currency-line">
+              <span>{{ formatCurrency(accountInUSD, "USD") }}</span>
             </p>
           </div>
         </div>
@@ -56,13 +62,31 @@ import { useStore } from "vuex";
 import { onMounted, computed } from "vue";
 
 const store = useStore();
-
 const rates = computed(() => store.getters["rates"]);
+const bill = computed(() => store.state.auth.bill);
 
 const formattedDate = computed(() => {
   const timestamp = store.getters["timestamp"];
   return timestamp ? new Date(timestamp * 1000).toLocaleDateString() : null;
 });
+
+const accountInUSD = computed(() => {
+  const rubToUsdRate = rates.value["RUB"];
+  return rubToUsdRate ? bill.value / rubToUsdRate : 0;
+});
+
+const accountInEUR = computed(() => {
+  const usdToEurRate = rates.value["EUR"];
+  return usdToEurRate ? accountInUSD.value * usdToEurRate : 0;
+});
+
+const formatCurrency = (value, currencyCode = "RUB") => {
+  return new Intl.NumberFormat("ru-RU", {
+    style: "currency",
+    currency: currencyCode,
+    minimumFractionDigits: 2,
+  }).format(value);
+};
 
 onMounted(async () => {
   await store.dispatch("fetchRate");

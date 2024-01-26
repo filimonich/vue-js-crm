@@ -7,7 +7,13 @@ const currencyModule = {
   }),
   mutations: {
     SET_RATES(state, payload) {
-      state.rates = payload;
+      const rearrangedRates = {
+        RUB: payload.RUB,
+        EUR: payload.EUR,
+        USD: payload.USD,
+      };
+
+      state.rates = rearrangedRates;
     },
     SET_TIMESTAMP(state, payload) {
       state.timestamp = payload;
@@ -16,17 +22,18 @@ const currencyModule = {
   actions: {
     async fetchRate({ commit }) {
       const apiKey = process.env.VUE_APP_CURRENCY_API_KEY;
+
       try {
         const response = await axios.get(
           "https://openexchangerates.org/api/latest.json",
-          // "https://openexchangerates.org/api/latest.jso",
           {
             params: {
               app_id: apiKey,
-              symbols: "USD,EUR,RUB",
+              symbols: "EUR,RUB,USD",
             },
           }
         );
+
         commit("SET_RATES", response.data.rates);
         commit("SET_TIMESTAMP", response.data.timestamp);
       } catch (e) {
