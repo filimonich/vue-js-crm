@@ -17,6 +17,8 @@
 </template>
 
 <script setup>
+import { ref } from "vue";
+
 const colors = ["spinner-red-only", "spinner-blue-only", "spinner-green-only"];
 
 const color = ref(colors[Math.floor(Math.random() * 3)]);

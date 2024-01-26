@@ -3,12 +3,16 @@
     <div class="page-title">
       <h3>Счет</h3>
 
-      <button class="btn waves-effect waves-light btn-small">
+      <button
+        class="btn waves-effect waves-light btn-small"
+        @click="reloadData"
+      >
         <i class="material-icons">refresh</i>
       </button>
     </div>
 
-    <div class="row">
+    <Loader v-if="loading" />
+    <div class="row" v-else>
       <div class="col s12 m6 l4">
         <div class="card light-blue bill-card">
           <div class="card-content white-text">
@@ -59,7 +63,10 @@
 
 <script setup>
 import { useStore } from "vuex";
-import { onMounted, computed } from "vue";
+import { ref, onMounted, computed } from "vue";
+import Loader from "@/components/loader/Loader.vue";
+
+const loading = ref(false);
 
 const store = useStore();
 const rates = computed(() => store.getters["rates"]);
@@ -88,7 +95,15 @@ const formatCurrency = (value, currencyCode = "RUB") => {
   }).format(value);
 };
 
-onMounted(async () => {
+const reloadData = async () => {
+  loading.value = true;
   await store.dispatch("fetchRate");
+  loading.value = false;
+};
+
+onMounted(async () => {
+  loading.value = true;
+  await store.dispatch("fetchRate");
+  loading.value = false;
 });
 </script>
