@@ -98,6 +98,21 @@ export default {
     async fetchUserData({ commit }) {
       await fetchUserData(commit);
     },
+    async createCategory({ state }, { categoryName, limit }) {
+      const database = getDatabase();
+      const categoryRef = ref(
+        database,
+        `users/${state.user.uid}/categories/${categoryName}`
+      );
+
+      try {
+        await set(categoryRef, {
+          limit: limit,
+        });
+      } catch (e) {
+        console.error("Ошибка при создании категории", e);
+      }
+    },
     async logout({ commit }) {
       const auth = getAuth();
       try {

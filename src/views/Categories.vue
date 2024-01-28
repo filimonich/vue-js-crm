@@ -11,15 +11,15 @@
               <h4>Создать</h4>
             </div>
 
-            <form>
+            <form @submit.prevent="createCategory">
               <div class="input-field">
-                <input id="name" type="text" />
+                <input id="name" type="text" v-model="categoryName" />
                 <label for="name">Название</label>
                 <span class="helper-text invalid">Введите название</span>
               </div>
 
               <div class="input-field">
-                <input id="limit" type="number" />
+                <input id="limit" type="number" v-model.number="limit" />
                 <label for="limit">Лимит</label>
                 <span class="helper-text invalid">Минимальная величина</span>
               </div>
@@ -68,3 +68,21 @@
     </section>
   </div>
 </template>
+
+<script setup>
+import { ref } from "vue";
+import { useStore } from "vuex";
+
+const store = useStore();
+const categoryName = ref("");
+const limit = ref(1);
+
+const createCategory = async () => {
+  try {
+    await store.dispatch("auth/createCategory", {
+      categoryName: categoryName.value,
+      limit: limit.value,
+    });
+  } catch (e) {}
+};
+</script>
