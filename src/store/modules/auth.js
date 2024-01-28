@@ -13,20 +13,22 @@ export default {
     return {
       user: null,
       name: null,
+      categories: null,
       bill: null,
       authError: null,
     };
   },
   mutations: {
-    setUser(state, { user, name, bill }) {
-      state.user = user;
-      state.name = name;
-      state.bill = bill;
+    setUser(state, payload) {
+      Object.assign(state, payload);
     },
     clearUser(state) {
-      state.user = null;
-      state.name = null;
-      state.bill = null;
+      Object.assign(state, {
+        user: null,
+        name: null,
+        bill: null,
+        categories: null,
+      });
     },
     setAuthError(state, error) {
       state.authError = error;
@@ -34,10 +36,14 @@ export default {
     clearAuthError(state) {
       state.authError = null;
     },
+    setCategories(state, categories) {
+      state.categories = categories;
+    },
   },
   getters: {
     user: s => s.user,
     name: s => s.name,
+    categories: s => s.categories,
     bill: s => s.bill,
     authError: s => s.authError,
   },
@@ -98,19 +104,53 @@ export default {
     async fetchUserData({ commit }) {
       await fetchUserData(commit);
     },
-    async createCategory({ state }, { categoryName, limit }) {
+    async createCategory({ state, commit }, { categoryName, limit }) {
+      const database = getDatabase();
+      const categoriesRef = ref(database, `users/${state.user.uid}/categories`);
+      try {
+        const snapshot = await get(categoriesRef);
+        let categories = snapshot.exists() ? snapshot.val() : [];
+        if (!Array.isArray(categories)) {
+          categories = Object.values(categories); // Преобразование объекта в массив, если это объект
+        }
+        categories.push({
+          name: categoryName,
+          limit: limit,
+        });
+        await set(categoriesRef, categories);
+        commit("setCategories", categories);
+      } catch (e) {
+        console.error("Ошибка при создании категории", e);
+      }
+    },
+    async updateCategory(
+      { state, commit },
+      { categoryId, categoryName, limit }
+    ) {
       const database = getDatabase();
       const categoryRef = ref(
         database,
-        `users/${state.user.uid}/categories/${categoryName}`
+        `users/${state.user.uid}/categories/${categoryId}`
       );
-
       try {
         await set(categoryRef, {
+          name: categoryName,
           limit: limit,
         });
+
+        // Fetch the updated categories to reflect the changes in the state
+        const categoriesRef = ref(
+          database,
+          `users/${state.user.uid}/categories`
+        );
+        const snapshot = await get(categoriesRef);
+        let categories = snapshot.exists() ? snapshot.val() : [];
+        if (!Array.isArray(categories)) {
+          categories = Object.values(categories); // Convert object to array if it's an object
+        }
+        commit("setCategories", categories);
       } catch (e) {
-        console.error("Ошибка при создании категории", e);
+        console.error("Ошибка при обновлении категории", e);
       }
     },
     async logout({ commit }) {

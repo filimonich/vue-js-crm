@@ -12,8 +12,13 @@ export async function fetchUserData(commit) {
       const userData = snapshot.val();
       const name = userData.name;
       const bill = userData.bill;
+      const categories = userData.categories || {};
       commit("setUser", { user, name, bill });
-      localStorage.setItem("auth", JSON.stringify({ user, name, bill }));
+      commit("setCategories", categories);
+      localStorage.setItem(
+        "auth",
+        JSON.stringify({ user, name, bill, categories })
+      );
     } else {
       console.error("No data available for user: " + user.uid);
     }
