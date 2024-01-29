@@ -1,4 +1,11 @@
-import { required, email, minLength, helpers } from "@vuelidate/validators";
+import {
+  required,
+  email,
+  minLength,
+  helpers,
+  minValue,
+} from "@vuelidate/validators";
+// import { required, email as emailValidator } from "@vuelidate/validators";
 
 export function getEmailValidationRules() {
   return {
@@ -24,6 +31,16 @@ export function getNameValidationRules() {
       ({ $params, $model }) =>
         `Имя должно содержать как минимум ${$params.min} символов. Сейчас ${$model.length}`,
       minLength(3)
+    ),
+  };
+}
+export function getLimitValidationRules() {
+  return {
+    required: helpers.withMessage("Пожалуйста, введите число", required),
+    minValue: helpers.withMessage(
+      ({ $params, $model }) =>
+        `Минимальное число должно быть больше или равно ${$params.min} . Сейчас ${$model}`,
+      minValue(100)
     ),
   };
 }

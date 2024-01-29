@@ -111,7 +111,7 @@ export default {
         const snapshot = await get(categoriesRef);
         let categories = snapshot.exists() ? snapshot.val() : [];
         if (!Array.isArray(categories)) {
-          categories = Object.values(categories); // Преобразование объекта в массив, если это объект
+          categories = Object.values(categories);
         }
         categories.push({
           name: categoryName,
@@ -138,7 +138,6 @@ export default {
           limit: limit,
         });
 
-        // Fetch the updated categories to reflect the changes in the state
         const categoriesRef = ref(
           database,
           `users/${state.user.uid}/categories`
@@ -146,7 +145,7 @@ export default {
         const snapshot = await get(categoriesRef);
         let categories = snapshot.exists() ? snapshot.val() : [];
         if (!Array.isArray(categories)) {
-          categories = Object.values(categories); // Convert object to array if it's an object
+          categories = Object.values(categories);
         }
         commit("setCategories", categories);
       } catch (e) {
