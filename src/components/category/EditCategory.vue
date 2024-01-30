@@ -21,7 +21,7 @@
 
         <div class="input-field">
           <input type="text" id="name" v-model="editableCategory.name" />
-          <label :class="{ active: editableCategory.name }" for="name"
+          <label :class="{ active: editableCategory.name !== '' }" for="name"
             >Название</label
           >
           <span
@@ -38,7 +38,7 @@
             type="number"
             v-model.number="editableCategory.limit"
           />
-          <label :class="{ active: editableCategory.limit }" for="limit"
+          <label :class="{ active: editableCategory.limit !== '' }" for="limit"
             >Лимит</label
           >
           <span

@@ -19,7 +19,7 @@
 
         <div class="input-field">
           <input id="limit" type="number" v-model.number="limit" />
-          <label :class="{ active: limit }" for="limit">Лимит</label>
+          <label :class="{ active: limit !== '' }" for="limit">Лимит</label>
           <span
             v-for="(error, errorType) in v$.limit.$errors"
             :key="errorType"
