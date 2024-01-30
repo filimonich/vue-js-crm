@@ -38,18 +38,19 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUpdated } from "vue";
+import { getCurrentInstance, ref, onMounted, onUpdated } from "vue";
 import { useStore } from "vuex";
-
 import { useVuelidate } from "@vuelidate/core";
 import {
   getLimitValidationRules,
   getNameValidationRules,
 } from "@/validation/validationRules";
+import messages from "@/plugins/messages";
 
 const store = useStore();
 const categoryName = ref("");
 const limit = ref(100);
+const { proxy } = getCurrentInstance();
 
 const rules = {
   name: getNameValidationRules(),
@@ -81,6 +82,7 @@ const createCategory = async () => {
       categoryName: categoryName.value,
       limit: limit.value,
     });
+    proxy.$showToast(messages.createCategory);
   } catch (e) {}
 };
 </script>

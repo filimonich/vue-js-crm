@@ -58,14 +58,21 @@
   </div>
 </template>
 <script setup>
-import { ref, computed, onMounted, onUpdated, watch } from "vue";
+import {
+  getCurrentInstance,
+  ref,
+  computed,
+  onMounted,
+  onUpdated,
+  watch,
+} from "vue";
 import { useStore } from "vuex";
-
 import { useVuelidate } from "@vuelidate/core";
 import {
   getLimitValidationRules,
   getNameValidationRules,
 } from "@/validation/validationRules";
+import messages from "@/plugins/messages";
 
 const store = useStore();
 const categoryName = ref("");
@@ -73,6 +80,7 @@ const limit = ref(100);
 const categories = computed(() => store.state.auth.categories);
 const selectedCategory = ref(null);
 const editableCategory = ref({});
+const { proxy } = getCurrentInstance();
 
 const rules = {
   selectedCategory: {
@@ -127,6 +135,7 @@ const updateCategory = async () => {
         limit: editableCategory.value.limit,
       });
       Object.assign(selectedCategory.value, editableCategory.value);
+      proxy.$showToast(messages.updateCategory);
     } catch (e) {}
   }
 };
