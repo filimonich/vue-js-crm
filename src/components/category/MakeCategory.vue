@@ -4,7 +4,6 @@
       <div class="page-subtitle">
         <h4>Создать</h4>
       </div>
-
       <form @submit.prevent="createCategory">
         <div class="input-field">
           <input id="name" type="text" v-model.trim="categoryName" />
@@ -16,7 +15,6 @@
             >{{ error.$message }}</span
           >
         </div>
-
         <div class="input-field">
           <input id="limit" type="number" v-model.number="limit" />
           <label :class="{ active: limit !== '' }" for="limit">Лимит</label>
@@ -27,7 +25,6 @@
             >{{ error.$message }}</span
           >
         </div>
-
         <button class="btn waves-effect waves-light" type="submit">
           Создать
           <i class="material-icons right">send</i>

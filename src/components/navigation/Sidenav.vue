@@ -1,5 +1,4 @@
 <template>
-  <!-- <ul class="sidenav app-sidenav open"> -->
   <ul class="sidenav app-sidenav" :class="{ open: isOpen }">
     <li
       v-for="item in navigationItems"

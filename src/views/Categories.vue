@@ -5,7 +5,7 @@
     </div>
     <section>
       <div class="row">
-        <CreateCategory />
+        <MakeCategory />
         <EditCategory />
       </div>
     </section>
@@ -13,6 +13,6 @@
 </template>
 
 <script setup>
-import CreateCategory from "@/components/category/CreateCategory";
+import MakeCategory from "@/components/category/MakeCategory";
 import EditCategory from "@/components/category/EditCategory";
 </script>
