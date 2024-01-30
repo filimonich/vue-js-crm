@@ -13,6 +13,6 @@
 </template>
 
 <script setup>
-import CreateCategory from "@/components/сategory/CreateCategory";
-import EditCategory from "@/components/сategory/EditCategory";
+import CreateCategory from "@/components/category/CreateCategory";
+import EditCategory from "@/components/category/EditCategory";
 </script>

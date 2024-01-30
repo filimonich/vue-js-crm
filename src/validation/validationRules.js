@@ -5,7 +5,6 @@ import {
   helpers,
   minValue,
 } from "@vuelidate/validators";
-// import { required, email as emailValidator } from "@vuelidate/validators";
 
 export function getEmailValidationRules() {
   return {
