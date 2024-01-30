@@ -117,29 +117,6 @@ onUpdated(() => {
   M.FormSelect.init(document.querySelectorAll("select"));
 });
 
-// const updateCategory = async () => {
-//   if (v$.value.$invalid) {
-//     v$.value.$touch();
-//     console.log("Form submitted:", selectedCategory.value.name, limit.value);
-//     return;
-//   }
-//   if (selectedCategory.value) {
-//     try {
-//       const categoryId = categories.value.findIndex(
-//         category => category.id === editableCategory.value.id
-//       );
-
-//       await store.dispatch("auth/updateCategory", {
-//         categoryId: categoryId,
-//         categoryName: editableCategory.value.name,
-//         limit: editableCategory.value.limit,
-//       });
-//       Object.assign(selectedCategory.value, editableCategory.value);
-//       proxy.$showToast(messages.updateCategory);
-//     } catch (e) {}
-//   }
-// };
-
 const categoryExists = name => {
   return categories.value.some(category => category.name === name);
 };

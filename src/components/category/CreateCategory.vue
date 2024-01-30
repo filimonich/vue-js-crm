@@ -62,22 +62,6 @@ const v$ = useVuelidate(rules, {
   limit: limit,
 });
 
-// const createCategory = async () => {
-//   if (v$.value.$invalid) {
-//     v$.value.$touch();
-//     console.log("Form submitted:", categoryName.value, limit.value);
-//     return;
-//   }
-
-//   try {
-//     await store.dispatch("auth/createCategory", {
-//       categoryName: categoryName.value,
-//       limit: limit.value,
-//     });
-//     proxy.$showToast(messages.createCategory);
-//   } catch (e) {}
-// };
-
 const categoryExists = name => {
   const categories = store.state.auth.categories;
   return categories.some(category => category.name === name);
