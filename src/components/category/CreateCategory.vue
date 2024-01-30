@@ -7,7 +7,7 @@
 
       <form @submit.prevent="createCategory">
         <div class="input-field">
-          <input id="name" type="text" v-model="categoryName" />
+          <input id="name" type="text" v-model.trim="categoryName" />
           <label for="name">Название</label>
           <span
             v-for="(error, errorType) in v$.name.$errors"
@@ -60,14 +60,6 @@ const rules = {
 const v$ = useVuelidate(rules, {
   name: categoryName,
   limit: limit,
-});
-
-onMounted(() => {
-  M.FormSelect.init(document.querySelectorAll("select"));
-});
-
-onUpdated(() => {
-  M.FormSelect.init(document.querySelectorAll("select"));
 });
 
 const createCategory = async () => {

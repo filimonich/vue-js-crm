@@ -20,7 +20,7 @@
         </div>
 
         <div class="input-field">
-          <input type="text" id="name" v-model="editableCategory.name" />
+          <input type="text" id="name" v-model.trim="editableCategory.name" />
           <label :class="{ active: editableCategory.name !== '' }" for="name"
             >Название</label
           >
