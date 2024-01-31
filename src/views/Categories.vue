@@ -5,14 +5,20 @@
     </div>
     <section>
       <div class="row">
-        <MakeCategory />
-        <EditCategory />
+        <AsyncEditCategory />
       </div>
     </section>
   </div>
 </template>
 
 <script setup>
-import MakeCategory from "@/components/category/MakeCategory";
-import EditCategory from "@/components/category/EditCategory";
+import { defineAsyncComponent } from "vue";
+import Loader from "@/components/loader/Loader.vue";
+
+const AsyncEditCategory = defineAsyncComponent({
+  loader: () => import("@/components/category/CategoryForm"),
+  loadingComponent: Loader,
+  delay: 0,
+  timeout: 3000,
+});
 </script>

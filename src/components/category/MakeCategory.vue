@@ -61,6 +61,10 @@ const v$ = useVuelidate(rules, {
 
 const categoryExists = name => {
   const categories = store.state.auth.categories;
+  ////////////////
+  if (!Array.isArray(categories)) {
+    return false;
+  }
   return categories.some(category => category.name === name);
 };
 
