@@ -117,10 +117,6 @@ onUpdated(() => {
   M.FormSelect.init(document.querySelectorAll("select"));
 });
 
-const categoryExists = name => {
-  return categories.value.some(category => category.name === name);
-};
-
 const updateCategory = async () => {
   if (v$.value.$invalid) {
     v$.value.$touch();
@@ -131,26 +127,30 @@ const updateCategory = async () => {
     );
     return;
   }
+  const categoryId = editableCategory.value;
+  const categoryName = editableCategory.value.name;
+  const limit = editableCategory.value.limit;
 
-  if (categoryExists(editableCategory.value.name)) {
-    proxy.$showToast(messages.existsCategory);
-    return;
-  }
+  console.log("categoryId:", categoryId);
+  console.log("categoryName:", categoryName);
+  console.log("limit:", limit);
 
-  if (selectedCategory.value) {
-    try {
-      const categoryId = categories.value.findIndex(
-        category => category.id === editableCategory.value.id
-      );
+  const categoryIndex = categories.value.findIndex(
+    category => category.name === selectedCategory.value.name
+  );
 
-      await store.dispatch("auth/updateCategory", {
-        categoryId: categoryId,
-        categoryName: editableCategory.value.name,
-        limit: editableCategory.value.limit,
-      });
-      Object.assign(selectedCategory.value, editableCategory.value);
-      proxy.$showToast(messages.updateCategory);
-    } catch (e) {}
+  console.log("categoryIndex", categoryIndex);
+
+  try {
+    await store.dispatch("auth/updateCategory", {
+      categoryIndex: categoryIndex,
+      categoryName: categoryName,
+      limit: limit,
+    });
+
+    proxy.$showToast(messages.updateCategory);
+  } catch (e) {
+    console.error("Ошибка при обновлении категории", e);
   }
 };
 </script>

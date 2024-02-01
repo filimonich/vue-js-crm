@@ -125,12 +125,12 @@ export default {
     },
     async updateCategory(
       { state, commit },
-      { categoryId, categoryName, limit }
+      { categoryIndex, categoryName, limit }
     ) {
       const database = getDatabase();
       const categoryRef = ref(
         database,
-        `users/${state.user.uid}/categories/${categoryId}`
+        `users/${state.user.uid}/categories/${categoryIndex}`
       );
       try {
         await set(categoryRef, {
