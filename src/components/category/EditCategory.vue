@@ -75,8 +75,6 @@ import {
 import messages from "@/plugins/messages";
 
 const store = useStore();
-const categoryName = ref("");
-const limit = ref(100);
 const categories = computed(() => store.state.auth.categories);
 const selectedCategory = ref(null);
 const editableCategory = ref({});
@@ -95,26 +93,6 @@ watch(selectedCategory, newCategory => {
   if (newCategory) {
     editableCategory.value = { ...newCategory };
   }
-});
-
-watch(
-  categories,
-  newCategories => {
-    if (newCategories && newCategories.length > 0) {
-      selectedCategory.value = newCategories[0];
-    } else {
-      selectedCategory.value = null;
-    }
-  },
-  { immediate: true }
-);
-
-onMounted(() => {
-  M.FormSelect.init(document.querySelectorAll("select"));
-});
-
-onUpdated(() => {
-  M.FormSelect.init(document.querySelectorAll("select"));
 });
 
 const updateCategory = async () => {
@@ -140,17 +118,4 @@ const updateCategory = async () => {
   );
 
   console.log("categoryIndex", categoryIndex);
-
-  try {
-    await store.dispatch("auth/updateCategory", {
-      categoryIndex: categoryIndex,
-      categoryName: categoryName,
-      limit: limit,
-    });
-
-    proxy.$showToast(messages.updateCategory);
-  } catch (e) {
-    console.error("Ошибка при обновлении категории", e);
-  }
-};
 </script>
