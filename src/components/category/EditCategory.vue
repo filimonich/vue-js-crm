@@ -25,7 +25,7 @@
             >Название</label
           >
           <span
-            v-for="(error, errorType) in v$.selectedCategory.name.$errors"
+            v-for="(error, errorType) in v$.name.$errors"
             :key="errorType"
             class="helper-text invalid"
             >{{ error.$message }}</span
@@ -42,7 +42,7 @@
             >Лимит</label
           >
           <span
-            v-for="(error, errorType) in v$.selectedCategory.limit.$errors"
+            v-for="(error, errorType) in v$.limit.$errors"
             :key="errorType"
             class="helper-text invalid"
             >{{ error.$message }}</span
@@ -80,19 +80,30 @@ const selectedCategory = ref(null);
 const editableCategory = ref({});
 const { proxy } = getCurrentInstance();
 
-const rules = {
-  selectedCategory: {
-    name: getNameValidationRules(),
-    limit: getLimitValidationRules(),
-  },
-};
-
-const v$ = useVuelidate(rules, { selectedCategory });
-
 watch(selectedCategory, newCategory => {
   if (newCategory) {
     editableCategory.value = { ...newCategory };
   }
+});
+
+watch(
+  categories,
+  newCategories => {
+    if (newCategories && newCategories.length > 0) {
+      selectedCategory.value = newCategories[0];
+    } else {
+      selectedCategory.value = null;
+    }
+  },
+  { immediate: true }
+);
+
+onMounted(() => {
+  M.FormSelect.init(document.querySelectorAll("select"));
+});
+
+onUpdated(() => {
+  M.FormSelect.init(document.querySelectorAll("select"));
 });
 
 const updateCategory = async () => {
@@ -118,4 +129,24 @@ const updateCategory = async () => {
   );
 
   console.log("categoryIndex", categoryIndex);
+
+  try {
+    await store.dispatch("auth/updateCategory", {
+      categoryIndex: categoryIndex,
+      categoryName: categoryName,
+      limit: limit,
+    });
+
+    proxy.$showToast(messages.updateCategory);
+  } catch (e) {
+    console.error("Ошибка при обновлении категории", e);
+  }
+};
+
+const rules = {
+  name: { ...getNameValidationRules() },
+  limit: { ...getLimitValidationRules() },
+};
+
+const v$ = useVuelidate(rules, editableCategory);
 </script>
