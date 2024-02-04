@@ -27,7 +27,7 @@ const auth = getAuth(firebaseApp);
 let app;
 
 onAuthStateChanged(auth, user => {
-  store.dispatch("auth/fetchUserData");
+  store.dispatch("auth/userData");
   if (!app) {
     app = createApp(App);
     app.use(store);

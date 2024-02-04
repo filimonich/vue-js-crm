@@ -1,7 +1,7 @@
 import { getAuth } from "firebase/auth";
 import { getDatabase, ref, get } from "firebase/database";
 
-export async function fetchUserData(commit) {
+export async function userData(commit) {
   const auth = getAuth();
   const user = auth.currentUser;
   if (user) {
