@@ -109,26 +109,30 @@ onUpdated(() => {
 const updateCategory = async () => {
   if (v$.value.$invalid) {
     v$.value.$touch();
-    console.log(
-      "Form submitted:",
-      editableCategory.value.name,
-      editableCategory.value.limit
-    );
     return;
   }
   const categoryId = editableCategory.value;
   const categoryName = editableCategory.value.name;
   const limit = editableCategory.value.limit;
 
-  console.log("categoryId:", categoryId);
-  console.log("categoryName:", categoryName);
-  console.log("limit:", limit);
+  const nameExists = categories.value.some(
+    category => category.name === categoryName
+  );
+
+  if (nameExists) {
+    proxy.$showToast(messages.existsCategory);
+    return;
+  }
 
   const categoryIndex = categories.value.findIndex(
     category => category.name === selectedCategory.value.name
   );
 
   console.log("categoryIndex", categoryIndex);
+  console.log("categoryId:", categoryId);
+  console.log("categoryName:", categoryName);
+  console.log("limit:", limit);
+  console.log("store.categories", store.state.auth.categories);
 
   try {
     await store.dispatch("auth/updateCategory", {
