@@ -23,6 +23,7 @@ export async function updateCategory(
     }
     commit("setCategories", categories);
   } catch (e) {
-    console.error("Ошибка при обновлении категории", e);
+    commit("setAuthError", e);
+    throw e;
   }
 }

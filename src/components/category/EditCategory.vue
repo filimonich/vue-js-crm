@@ -138,9 +138,7 @@ const updateCategory = async () => {
     });
 
     proxy.$showToast(messages.updateCategory);
-  } catch (e) {
-    console.error("Ошибка при обновлении категории", e);
-  }
+  } catch (e) {}
 };
 
 const rules = {

@@ -19,6 +19,7 @@ export async function createCategory(
     await set(categoriesRef, categories);
     commit("setCategories", categories);
   } catch (e) {
-    console.error("Ошибка при создании категории", e);
+    commit("setAuthError", e);
+    throw e;
   }
 }

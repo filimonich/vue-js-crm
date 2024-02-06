@@ -20,7 +20,8 @@ export async function userData(commit) {
         JSON.stringify({ user, name, bill, categories })
       );
     } else {
-      console.error("No data available for user: " + user.uid);
+      commit("setAuthError", e);
+      throw e;
     }
   }
 }

@@ -69,7 +69,6 @@ export async function logout({ commit }) {
     commit("clearUser");
     commit("clearAuthError");
   } catch (e) {
-    console.error("Ошибка при выходе", e);
     commit("setAuthError", e);
     throw e;
   }
