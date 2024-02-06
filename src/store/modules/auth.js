@@ -2,6 +2,7 @@ import { userData } from "@/store/actions/userData";
 import { updateCategory } from "@/store/actions/updateCategory";
 import { login, register, logout } from "@/store/actions/authLogic";
 import { createCategory } from "@/store/actions/createCategory";
+import { createNewRecord } from "@/store/actions/createNewRecord";
 
 export default {
   namespaced: true,
@@ -67,6 +68,15 @@ export default {
     },
     async logout({ commit }) {
       await logout({ commit });
+    },
+    async createNewRecord(
+      { state, commit },
+      { categoryIndex, recordName, limit, selectedType }
+    ) {
+      await createNewRecord(
+        { state, commit },
+        { categoryIndex, recordName, limit, selectedType }
+      );
     },
   },
 };

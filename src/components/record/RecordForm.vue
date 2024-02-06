@@ -72,14 +72,7 @@
 </template>
 
 <script setup>
-import {
-  getCurrentInstance,
-  ref,
-  computed,
-  onMounted,
-  onUpdated,
-  watch,
-} from "vue";
+import { getCurrentInstance, ref, computed, onMounted, onUpdated } from "vue";
 import { useStore } from "vuex";
 import { useVuelidate } from "@vuelidate/core";
 import {
@@ -94,7 +87,6 @@ const store = useStore();
 const categories = computed(() => store.state.auth.categories);
 const selectedCategory = ref(null);
 const selectedType = ref(null);
-const editableCategory = ref({});
 const { proxy } = getCurrentInstance();
 
 const rules = {
@@ -126,10 +118,18 @@ const newRecord = async () => {
     return;
   }
 
-  proxy.$showToast(messages.recordCategory);
-  console.log("newCategory:", selectedCategory.value);
-  console.log("event.target.value:", limit.value);
-  console.log("Selected type:", selectedType.value);
-  console.log("event.target.value:", recordName.value);
+  const categoryIndex = categories.value.findIndex(
+    category => category.name === selectedCategory.value.name
+  );
+
+  try {
+    await store.dispatch("auth/createNewRecord", {
+      categoryIndex: categoryIndex,
+      recordName: recordName.value,
+      limit: limit.value,
+      selectedType: selectedType.value,
+    });
+    proxy.$showToast(messages.recordCategory);
+  } catch (e) {}
 };
 </script>
