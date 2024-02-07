@@ -122,6 +122,36 @@ const newRecord = async () => {
     category => category.name === selectedCategory.value.name
   );
 
+  const auth = store.state.auth;
+  const authCategories = auth.categories;
+  const currentSelectedCategory = authCategories[categoryIndex];
+
+  if (selectedType.value === "income") {
+    if (auth.bill <= limit.value) {
+      proxy.$showToast(messages.notEnoughMoney);
+      return;
+    }
+    if (currentSelectedCategory.limit <= currentSelectedCategory.amount) {
+      console.log("сумма в категории набрана");
+      proxy.$showToast(messages.limitAmountCollected);
+      return;
+    }
+    if (
+      limit.value >
+      currentSelectedCategory.limit - currentSelectedCategory.amount
+    ) {
+      proxy.$showToast(messages.amountMoreThanRequired);
+      return;
+    }
+  }
+
+  if (selectedType.value === "outcome") {
+    if (currentSelectedCategory.amount >= limit.value) {
+      proxy.$showToast(messages.insufficientFunds);
+      return;
+    }
+  }
+
   try {
     await store.dispatch("auth/createNewRecord", {
       categoryIndex: categoryIndex,

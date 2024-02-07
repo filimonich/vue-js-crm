@@ -15,6 +15,7 @@ export async function createCategory(
     categories.push({
       name: categoryName,
       limit: limit,
+      amount: 0,
     });
     await set(categoriesRef, categories);
     commit("setCategories", categories);

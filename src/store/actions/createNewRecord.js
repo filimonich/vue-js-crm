@@ -6,9 +6,14 @@ export async function createNewRecord(
 ) {
   const database = getDatabase();
   const categoriesRef = ref(database, `users/${state.user.uid}/categories`);
+  const billRef = ref(database, `users/${state.user.uid}/bill`);
   try {
-    const snapshot = await get(categoriesRef);
-    let categories = snapshot.exists() ? snapshot.val() : [];
+    const categoriesSnapshot = await get(categoriesRef);
+    const billSnapshot = await get(billRef);
+    let categories = categoriesSnapshot.exists()
+      ? categoriesSnapshot.val()
+      : [];
+    let bill = billSnapshot.exists() ? billSnapshot.val() : 0;
     if (!Array.isArray(categories[categoryIndex].records)) {
       categories[categoryIndex].records = [];
     }
@@ -20,15 +25,20 @@ export async function createNewRecord(
     });
 
     if (selectedType === "income") {
-      categories[categoryIndex].limit += limit;
+      categories[categoryIndex].amount += limit;
+      bill -= limit;
     } else if (selectedType === "outcome") {
-      categories[categoryIndex].limit -= limit;
+      categories[categoryIndex].amount -= limit;
+      bill += limit;
     }
 
     await set(categoriesRef, categories);
+    await set(billRef, bill);
+
     commit("setCategories", categories);
+    commit("setUser", { bill });
   } catch (e) {
-    commit("setCategoriesError", e);
+    commit("setAuthError", e);
     throw e;
   }
 }
