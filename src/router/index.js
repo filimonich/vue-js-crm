@@ -31,6 +31,7 @@ const routes = [
     name: "detail",
     meta: { layout: "main", auth: true },
     component: () => import("../views/Detail.vue"),
+    props: route => filterEmpty(route.query),
   },
   {
     path: "/history",
@@ -57,6 +58,16 @@ const routes = [
     component: () => import("../views/Record.vue"),
   },
 ];
+
+function filterEmpty(query) {
+  const result = {};
+  Object.keys(query).forEach(key => {
+    if (query[key] !== undefined && query[key] !== null && query[key] !== "") {
+      result[key] = query[key];
+    }
+  });
+  return result;
+}
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
