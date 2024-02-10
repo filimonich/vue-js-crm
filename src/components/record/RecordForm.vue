@@ -146,8 +146,12 @@ const newRecord = async () => {
   }
 
   if (selectedType.value === "outcome") {
-    if (currentSelectedCategory.amount >= limit.value) {
+    if (currentSelectedCategory.amount > limit.value) {
       proxy.$showToast(messages.insufficientFunds);
+      return;
+    }
+    if (limit.value > currentSelectedCategory.amount) {
+      proxy.$showToast("сумма категории слишком мала");
       return;
     }
   }
