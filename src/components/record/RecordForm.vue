@@ -125,6 +125,7 @@ const newRecord = async () => {
   const auth = store.state.auth;
   const authCategories = auth.categories;
   const currentSelectedCategory = authCategories[categoryIndex];
+  console.log("currentSelectedCategory", currentSelectedCategory);
 
   if (selectedType.value === "income") {
     if (auth.bill <= limit.value) {
@@ -146,12 +147,8 @@ const newRecord = async () => {
   }
 
   if (selectedType.value === "outcome") {
-    if (currentSelectedCategory.amount > limit.value) {
+    if (currentSelectedCategory.amount < limit.value) {
       proxy.$showToast(messages.insufficientFunds);
-      return;
-    }
-    if (limit.value > currentSelectedCategory.amount) {
-      proxy.$showToast("сумма категории слишком мала");
       return;
     }
   }
