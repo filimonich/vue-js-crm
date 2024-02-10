@@ -1,4 +1,4 @@
-import { getDatabase, ref, set, get } from "firebase/database";
+import { getDatabase, ref, update, get } from "firebase/database";
 
 export async function updateCategory(
   { state, commit },
@@ -10,7 +10,7 @@ export async function updateCategory(
     `users/${state.user.uid}/categories/${categoryIndex}`
   );
   try {
-    await set(categoryRef, {
+    await update(categoryRef, {
       name: categoryName,
       limit: limit,
     });

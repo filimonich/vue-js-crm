@@ -115,9 +115,9 @@ const updateCategory = async () => {
   const categoryName = editableCategory.value.name;
   const limit = editableCategory.value.limit;
 
-  const nameExists = categories.value.some(
-    category => category.name === categoryName
-  );
+  const nameExists = categories.value
+    .filter(category => category !== selectedCategory.value)
+    .some(category => category.name === categoryName);
 
   if (nameExists) {
     proxy.$showToast(messages.existsCategory);
