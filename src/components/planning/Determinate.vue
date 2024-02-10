@@ -3,12 +3,22 @@
     <div v-for="(category, index) in categories" :key="index">
       <p>
         <strong>{{ category.name }}: </strong>
-        {{ category.amount }} из {{ category.limit }}
+        {{ formatCurrency(category.amount) }} из
+        {{ formatCurrency(category.limit) }}
       </p>
-      <div class="progress">
+      <div
+        class="progress"
+        v-tooltip="getTooltipText(category.amount, category.limit)"
+      >
         <div
-          class="determinate green"
-          :style="'width: ' + (category.amount / category.limit) * 100 + '%'"
+          class="determinate"
+          :class="{
+            green: progressWidth(category.amount, category.limit) < 100,
+            red: progressWidth(category.amount, category.limit) === 100,
+          }"
+          :style="{
+            width: `${progressWidth(category.amount, category.limit)}%`,
+          }"
         ></div>
       </div>
     </div>
@@ -17,12 +27,29 @@
 
 <script setup>
 import { useStore } from "vuex";
-import { ref, computed } from "vue";
+import { computed } from "vue";
 
 const store = useStore();
-const state = computed(() => store.state);
 const categories = computed(() => store.state.auth.categories);
 
-console.log("state", state.value);
-console.log("categories", categories.value);
+function progressWidth(amount, limit) {
+  return (amount / limit) * 100;
+}
+
+function getTooltipText(amount, limit) {
+  const width = progressWidth(amount, limit);
+  if (width < 100) {
+    return `Осталось набрать: ${formatCurrency(limit - amount)}`;
+  } else {
+    return "Категория набрана";
+  }
+}
+
+const formatCurrency = (value, currencyCode = "RUB") => {
+  return new Intl.NumberFormat("ru-RU", {
+    style: "currency",
+    currency: currencyCode,
+    minimumFractionDigits: 2,
+  }).format(value);
+};
 </script>
