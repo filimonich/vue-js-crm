@@ -23,7 +23,7 @@
               :key="recordIndex"
             >
               <td>{{ getTotalIndex(categoryIndex, recordIndex) }}</td>
-              <td>{{ record.limit || "-" }}</td>
+              <td>{{ formatCurrency(record.limit) || "-" }}</td>
               <td>{{ record.createdDate || "-" }}</td>
               <td>{{ category.name || "-" }}</td>
               <td>
@@ -62,24 +62,13 @@ import { useRouter } from "vue-router";
 const router = useRouter();
 const store = useStore();
 const categories = computed(() => store.state.auth.categories);
-
-// function openDetail(categoryIndex, recordIndex) {
-//   // Убедитесь, что categoryIndex и recordIndex являются числами
-//   router.push({
-//     name: "detail",
-//     query: {
-//       categoryIndex: categoryIndex.toString(),
-//       recordIndex: recordIndex.toString(),
-//     },
-//   });
-// }
+console.log("categories", categories.value);
 
 function openDetail(categoryIndex, recordIndex) {
-  // Убедитесь, что categoryIndex и recordIndex являются числами
   router.push({
     name: "detail",
     query: {
-      categoryIndex: categoryIndex, // передавайте как числа, если это возможно
+      categoryIndex: categoryIndex,
       recordIndex: recordIndex,
     },
   });
@@ -93,5 +82,11 @@ function getTotalIndex(categoryIndex, recordIndex) {
   return totalIndex + recordIndex;
 }
 
-console.log("categories", categories.value);
+const formatCurrency = (value, currencyCode = "RUB") => {
+  return new Intl.NumberFormat("ru-RU", {
+    style: "currency",
+    currency: currencyCode,
+    minimumFractionDigits: 2,
+  }).format(value);
+};
 </script>
