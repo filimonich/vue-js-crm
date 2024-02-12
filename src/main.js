@@ -9,6 +9,7 @@ import tooltipDirective from "@/directives/tooltip.directive";
 import ToastUtil from "@/plugins/toast.plugin";
 import { initializeApp } from "firebase/app";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import Paginate from "vuejs-paginate-next";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBeE9suWVOudy-hB6wo647qCzkbwdGH2iU",
@@ -35,6 +36,7 @@ onAuthStateChanged(auth, user => {
     app.use(ToastUtil);
     app.directive("tooltip", tooltipDirective);
     app.provide("auth", auth);
+    app.component("paginate", Paginate);
     app.mount("#app");
   }
 });
