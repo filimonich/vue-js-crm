@@ -1,47 +1,55 @@
 <template>
-  <section>
-    <table>
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Сумма</th>
-          <th>Дата</th>
-          <th>Категория</th>
-          <th>Тип</th>
-          <th>Открыть</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(record, index) in paginatedRecords" :key="index">
-          <td>{{ calculateRowNumber(index) }}</td>
-          <td>{{ formatCurrency(record.limit) || "-" }}</td>
-          <td>{{ record.createdDate || "-" }}</td>
-          <td>{{ getCategoryName(index) || "-" }}</td>
-          <td>
-            <span :class="getRecordTypeClass(record)">
-              {{ getRecordTypeText(record.selectedType) }}
-            </span>
-          </td>
-          <td>
-            <button class="btn-small btn" @click="openDetail(record, index)">
-              <i class="material-icons">open_in_new</i>
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <paginate
-      :page-count="totalPages"
-      :click-handler="handlePageChange"
-      :prev-text="'Prev'"
-      :next-text="'Next'"
-      :container-class="'pagination'"
-      :page-class="'waves-effect'"
-      :prev-link-class="'waves-effect'"
-      :next-link-class="'waves-effect'"
-      :margin-pages="1"
-    ></paginate>
-  </section>
+  <template v-if="!paginatedRecords || paginatedRecords.length === 0">
+    <span class="card-title">Нет записей. Создайте</span>
+    <router-link to="/record">
+      <a> новую запись </a>
+    </router-link>
+  </template>
+  <template v-else>
+    <section>
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Сумма</th>
+            <th>Дата</th>
+            <th>Категория</th>
+            <th>Тип</th>
+            <th>Открыть</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(record, index) in paginatedRecords" :key="index">
+            <td>{{ calculateRowNumber(index) }}</td>
+            <td>{{ formatCurrency(record.limit) || "-" }}</td>
+            <td>{{ record.createdDate || "-" }}</td>
+            <td>{{ getCategoryName(index) || "-" }}</td>
+            <td>
+              <span :class="getRecordTypeClass(record)">
+                {{ getRecordTypeText(record.selectedType) }}
+              </span>
+            </td>
+            <td>
+              <button class="btn-small btn" @click="openDetail(record, index)">
+                <i class="material-icons">open_in_new</i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <paginate
+        :page-count="totalPages"
+        :click-handler="handlePageChange"
+        :prev-text="'Prev'"
+        :next-text="'Next'"
+        :container-class="'pagination'"
+        :page-class="'waves-effect'"
+        :prev-link-class="'waves-effect'"
+        :next-link-class="'waves-effect'"
+        :margin-pages="1"
+      ></paginate>
+    </section>
+  </template>
 </template>
 
 <script setup>
@@ -99,12 +107,20 @@ const formatCurrency = (value, currencyCode = "RUB") => {
   }).format(value);
 };
 
+const calculateAllRecords = () => {
+  return categories.value && Array.isArray(categories.value)
+    ? categories.value.reduce(
+        (acc, category) => acc.concat(category.records || []),
+        []
+      )
+    : [];
+};
+
 const paginatedRecords = computed(() => {
   const start = (currentPage.value - 1) * itemsPerPage;
   const end = start + itemsPerPage;
-  const allRecords = categories.value
-    ? categories.value.flatMap(category => category.records || [])
-    : [];
+
+  const allRecords = calculateAllRecords();
 
   const sortedRecords = allRecords.sort((a, b) => {
     const dateA = new Date(a.createdDate);
@@ -117,9 +133,7 @@ const paginatedRecords = computed(() => {
 });
 
 const totalPages = computed(() => {
-  const allRecords = categories.value
-    ? categories.value.flatMap(category => category.records || [])
-    : [];
+  const allRecords = calculateAllRecords();
 
   return Math.ceil(allRecords.length / itemsPerPage);
 });
