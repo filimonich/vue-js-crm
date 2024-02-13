@@ -1,61 +1,47 @@
 <template>
-  <template v-if="!paginatedRecords || paginatedRecords.length === 0">
-    <div class="center">
-      <div class="margin">
-        <p class="card-title">Нет записей</p>
-      </div>
-      <div>
-        <router-link to="/record">
-          <a class="btn waves-effect waves-light">новая запись</a>
-        </router-link>
-      </div>
-    </div>
-  </template>
-  <template v-else>
-    <section>
-      <table>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Сумма</th>
-            <th>Дата</th>
-            <th>Категория</th>
-            <th>Тип</th>
-            <th>Открыть</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(record, index) in paginatedRecords" :key="index">
-            <td>{{ calculateRowNumber(index) }}</td>
-            <td>{{ formatCurrency(record.limit) || "-" }}</td>
-            <td>{{ record.createdDate || "-" }}</td>
-            <td>{{ getCategoryName(index) || "-" }}</td>
-            <td>
-              <span :class="getRecordTypeClass(record)">
-                {{ getRecordTypeText(record.selectedType) }}
-              </span>
-            </td>
-            <td>
-              <button class="btn-small btn" @click="openDetail(record, index)">
-                <i class="material-icons">open_in_new</i>
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <paginate
-        :page-count="totalPages"
-        :click-handler="handlePageChange"
-        :prev-text="'Prev'"
-        :next-text="'Next'"
-        :container-class="'pagination'"
-        :page-class="'waves-effect'"
-        :prev-link-class="'waves-effect'"
-        :next-link-class="'waves-effect'"
-        :margin-pages="1"
-      ></paginate>
-    </section>
-  </template>
+  <section>
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Сумма</th>
+          <th>Дата</th>
+          <th>Категория</th>
+          <th>Тип</th>
+          <th>Открыть</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(record, index) in paginatedRecords" :key="index">
+          <td>{{ calculateRowNumber(index) }}</td>
+          <td>{{ formatCurrency(record.limit) || "-" }}</td>
+          <td>{{ record.createdDate || "-" }}</td>
+          <td>{{ getCategoryName(index) || "-" }}</td>
+          <td>
+            <span :class="getRecordTypeClass(record)">
+              {{ getRecordTypeText(record.selectedType) }}
+            </span>
+          </td>
+          <td>
+            <button class="btn-small btn" @click="openDetail(record, index)">
+              <i class="material-icons">open_in_new</i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <paginate
+      :page-count="totalPages"
+      :click-handler="handlePageChange"
+      :prev-text="'Prev'"
+      :next-text="'Next'"
+      :container-class="'pagination'"
+      :page-class="'waves-effect'"
+      :prev-link-class="'waves-effect'"
+      :next-link-class="'waves-effect'"
+      :margin-pages="1"
+    ></paginate>
+  </section>
 </template>
 
 <script setup>

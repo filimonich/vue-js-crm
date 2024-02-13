@@ -2,11 +2,11 @@
   <template v-if="isCategoriesEmpty">
     <div class="center">
       <div class="margin">
-        <p class="card-title">Нет записей</p>
+        <p class="card-title">Нет категорий</p>
       </div>
       <div>
         <router-link to="/categories">
-          <a class="btn waves-effect waves-light">новая запись</a>
+          <a class="btn waves-effect waves-light">новая категория</a>
         </router-link>
       </div>
     </div>
