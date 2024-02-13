@@ -13,4 +13,8 @@ export default {
   "auth/invalid-credential": "Неправильное имя пользователя или пароль",
   "auth/too-many-requests": "Слишком много попыток",
   "auth/email-already-in-use": "Пользователь с таким Email уже зарегистрирован",
+  "Cannot read properties of undefined (reading 'records')":
+    "Перезагрузите страницу. Ошибка: Невозможно прочитать свойства неопределенного (чтение 'records')",
+  "TypeError: Cannot read properties of undefined (reading 'records')":
+    "Перезагрузите страницу. Ошибка типа: Невозможно прочитать свойства неопределенного (чтение 'records')",
 };

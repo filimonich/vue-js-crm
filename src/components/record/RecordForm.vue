@@ -119,7 +119,8 @@ watch(
   () => store.state.auth.authError,
   newError => {
     try {
-      proxy.$handleError(`Перезагрузите страницу ${newError}`);
+      proxy.$handleError(messages[newError]);
+      store.commit("auth/clearAuthError");
     } catch (e) {}
   }
 );
