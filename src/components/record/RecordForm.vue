@@ -1,78 +1,99 @@
 <template>
-  <form class="form" @submit.prevent="newRecord">
-    <div class="input-field">
-      <select v-model="selectedCategory" ref="selectRef">
-        <option value="" disabled selected>Выберите свой вариант</option>
-        <option
-          v-for="category in categories"
-          :key="category.name"
-          :value="category"
+  <template v-if="isCategoriesEmpty">
+    <div class="center">
+      <div class="margin">
+        <p class="card-title">Нет записей</p>
+      </div>
+      <div>
+        <router-link to="/categories">
+          <a class="btn waves-effect waves-light">новая запись</a>
+        </router-link>
+      </div>
+    </div>
+  </template>
+  <template v-else>
+    <form class="form" @submit.prevent="newRecord">
+      <div class="input-field">
+        <select v-model="selectedCategory" ref="selectRef">
+          <option value="" disabled selected>Выберите свой вариант</option>
+          <option
+            v-for="category in categories"
+            :key="category.name"
+            :value="category"
+          >
+            {{ category.name }}
+          </option>
+        </select>
+        <label>Выберите категорию</label>
+      </div>
+
+      <p>
+        <label>
+          <input
+            class="with-gap"
+            name="type"
+            type="radio"
+            value="income"
+            v-model="selectedType"
+          />
+          <span>Доход</span>
+        </label>
+      </p>
+
+      <p>
+        <label>
+          <input
+            class="with-gap"
+            name="type"
+            type="radio"
+            value="outcome"
+            v-model="selectedType"
+          />
+          <span>Расход</span>
+        </label>
+      </p>
+
+      <div class="input-field">
+        <input id="amount" type="number" v-model.number="limit" />
+        <label :class="{ active: limit !== '' }" for="amount">Сумма</label>
+        <span
+          v-for="(error, errorType) in v$.limit.$errors"
+          :key="errorType"
+          class="helper-text invalid"
+          >{{ error.$message }}</span
         >
-          {{ category.name }}
-        </option>
-      </select>
-      <label>Выберите категорию</label>
-    </div>
+      </div>
 
-    <p>
-      <label>
-        <input
-          class="with-gap"
-          name="type"
-          type="radio"
-          value="income"
-          v-model="selectedType"
-        />
-        <span>Доход</span>
-      </label>
-    </p>
+      <div class="input-field">
+        <input id="description" type="text" v-model.trim="recordName" />
+        <label :class="{ active: recordName !== '' }" for="description"
+          >Описание</label
+        >
+        <span
+          v-for="(error, errorType) in v$.name.$errors"
+          :key="errorType"
+          class="helper-text invalid"
+          >{{ error.$message }}</span
+        >
+      </div>
 
-    <p>
-      <label>
-        <input
-          class="with-gap"
-          name="type"
-          type="radio"
-          value="outcome"
-          v-model="selectedType"
-        />
-        <span>Расход</span>
-      </label>
-    </p>
-
-    <div class="input-field">
-      <input id="amount" type="number" v-model.number="limit" />
-      <label :class="{ active: limit !== '' }" for="amount">Сумма</label>
-      <span
-        v-for="(error, errorType) in v$.limit.$errors"
-        :key="errorType"
-        class="helper-text invalid"
-        >{{ error.$message }}</span
-      >
-    </div>
-
-    <div class="input-field">
-      <input id="description" type="text" v-model.trim="recordName" />
-      <label :class="{ active: recordName !== '' }" for="description"
-        >Описание</label
-      >
-      <span
-        v-for="(error, errorType) in v$.name.$errors"
-        :key="errorType"
-        class="helper-text invalid"
-        >{{ error.$message }}</span
-      >
-    </div>
-
-    <button class="btn waves-effect waves-light" type="submit">
-      Создать
-      <i class="material-icons right">send</i>
-    </button>
-  </form>
+      <button class="btn waves-effect waves-light" type="submit">
+        Создать
+        <i class="material-icons right">send</i>
+      </button>
+    </form>
+  </template>
 </template>
 
 <script setup>
-import { getCurrentInstance, ref, computed, onMounted, onUpdated } from "vue";
+import {
+  getCurrentInstance,
+  ref,
+  computed,
+  onMounted,
+  onUpdated,
+  watch,
+} from "vue";
 import { useStore } from "vuex";
 import { useVuelidate } from "@vuelidate/core";
 import {
@@ -88,6 +109,20 @@ const categories = computed(() => store.state.auth.categories);
 const selectedCategory = ref(null);
 const selectedType = ref(null);
 const { proxy } = getCurrentInstance();
+
+const isCategoriesEmpty = computed(() => {
+  const categories = store.state.auth.categories;
+  return !Array.isArray(categories) || categories.length === 0;
+});
+
+watch(
+  () => store.state.auth.authError,
+  newError => {
+    try {
+      proxy.$handleError(`Перезагрузите страницу ${newError}`);
+    } catch (e) {}
+  }
+);
 
 const rules = {
   name: getNameValidationRules(),
