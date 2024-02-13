@@ -1,9 +1,15 @@
 <template>
   <template v-if="!paginatedRecords || paginatedRecords.length === 0">
-    <span class="card-title">Нет записей. Создайте</span>
-    <router-link to="/record">
-      <a> новую запись </a>
-    </router-link>
+    <div class="center">
+      <div class="margin">
+        <p class="card-title">Нет записей</p>
+      </div>
+      <div>
+        <router-link to="/record">
+          <a class="btn waves-effect waves-light">новая запись</a>
+        </router-link>
+      </div>
+    </div>
   </template>
   <template v-else>
     <section>
