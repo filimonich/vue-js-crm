@@ -16,7 +16,7 @@
           <td>{{ calculateRowNumber(index) }}</td>
           <td>{{ formatCurrency(record.limit) || "-" }}</td>
           <td>{{ record.createdDate || "-" }}</td>
-          <td>{{ getCategoryName(index) || "-" }}</td>
+          <td>{{ record.categoryName || "-" }}</td>
           <td>
             <span :class="getRecordTypeClass(record)">
               {{ getRecordTypeText(record.selectedType) }}
@@ -52,16 +52,11 @@ import { useRouter } from "vue-router";
 const router = useRouter();
 const store = useStore();
 const categories = computed(() => store.state.auth.categories);
-const itemsPerPage = 2;
+const itemsPerPage = 5;
 const currentPage = ref(1);
 
 const calculateRowNumber = index => {
   return (currentPage.value - 1) * itemsPerPage + index + 1;
-};
-
-const getCategoryName = categoryIndex => {
-  const category = categories.value && categories.value[categoryIndex];
-  return category ? category.name || "-" : "-";
 };
 
 const getRecordTypeClass = record => {
@@ -82,10 +77,19 @@ const openDetail = (record, index) => {
     .find(category => category.records.indexOf(record) !== -1)
     .records.indexOf(record);
 
+  const categoryIndex = categories.value.findIndex(category =>
+    category.records.includes(record)
+  );
+
+  // console.log("record", record);
+  // console.log("index", index);
+  // console.log("recordIndex", recordIndex);
+  // console.log("categoryIndex", categoryIndex);
+
   router.push({
     name: "detail",
     query: {
-      categoryIndex: index,
+      categoryIndex: categoryIndex,
       recordIndex: recordIndex,
     },
   });
@@ -100,12 +104,28 @@ const formatCurrency = (value, currencyCode = "RUB") => {
 };
 
 const calculateAllRecords = () => {
-  return categories.value && Array.isArray(categories.value)
-    ? categories.value.reduce(
-        (acc, category) => acc.concat(category.records || []),
-        []
-      )
-    : [];
+  const allRecords =
+    categories.value && Array.isArray(categories.value)
+      ? categories.value.reduce(
+          (acc, category) => acc.concat(category.records || []),
+          []
+        )
+      : [];
+
+  allRecords.forEach((record, index) => {
+    record.categoryName = categories.value.find(category =>
+      category.records.some(rec => rec === record)
+    ).name;
+    // console.log("record.createdDate", record.createdDate);
+    // console.log("formatCurrency(record.limit)", formatCurrency(record.limit));
+    // console.log("categoryName", record.categoryName);
+    // console.log(
+    //   "category index",
+    //   categories.value.findIndex(category => category.records.includes(record))
+    // );
+  });
+
+  return allRecords;
 };
 
 const paginatedRecords = computed(() => {
@@ -114,11 +134,13 @@ const paginatedRecords = computed(() => {
 
   const allRecords = calculateAllRecords();
 
-  const sortedRecords = allRecords.sort((a, b) => {
-    const dateA = new Date(a.createdDate);
-    const dateB = new Date(b.createdDate);
-    return dateB - dateA;
-  });
+  const sortedRecords = allRecords
+    .sort((a, b) => {
+      const dateA = new Date(a.createdDate);
+      const dateB = new Date(b.createdDate);
+      return dateB - dateA || a.createdDate.localeCompare(b.createdDate);
+    })
+    .reverse();
 
   const slicedRecords = sortedRecords.slice(start, end);
   return slicedRecords;
