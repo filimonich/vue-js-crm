@@ -7,6 +7,7 @@ import "jquery";
 import "materialize-css";
 import tooltipDirective from "@/directives/tooltip.directive";
 import ToastUtil from "@/plugins/toast.plugin";
+import VueApexCharts from "vue3-apexcharts";
 import { initializeApp } from "firebase/app";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import Paginate from "vuejs-paginate-next";
@@ -37,6 +38,7 @@ onAuthStateChanged(auth, user => {
     app.directive("tooltip", tooltipDirective);
     app.provide("auth", auth);
     app.component("paginate", Paginate);
+    app.component("apexchart", VueApexCharts);
     app.mount("#app");
   }
 });
