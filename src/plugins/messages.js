@@ -10,6 +10,7 @@ export default {
   limitAmountCollected: "Лимит по категории собран",
   amountMoreThanRequired: "Сумма больше чем требуется",
   insufficientFunds: "Недостаточно средств в категории",
+  updateName: "Имя обновлено",
   "auth/invalid-credential": "Неправильное имя пользователя или пароль",
   "auth/too-many-requests": "Слишком много попыток",
   "auth/email-already-in-use": "Пользователь с таким Email уже зарегистрирован",

@@ -62,8 +62,12 @@ const v$ = useVuelidate(rules, {
 const updateName = async () => {
   if (v$.value.$invalid) {
     v$.value.$touch();
-    console.log(profileName.value);
     return;
   }
+
+  try {
+    await store.dispatch("auth/updateUserName", profileName.value);
+    proxy.$showToast(messages.updateName);
+  } catch (e) {}
 };
 </script>

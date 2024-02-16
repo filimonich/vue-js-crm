@@ -4,7 +4,7 @@ import {
   signOut,
   createUserWithEmailAndPassword,
 } from "firebase/auth";
-import { getDatabase, ref, set, get } from "firebase/database";
+import { getDatabase, ref, set, get, update } from "firebase/database";
 
 export async function login({ commit }, { email, password }) {
   const auth = getAuth();
@@ -67,6 +67,23 @@ export async function logout({ commit }) {
     await signOut(auth);
     localStorage.removeItem("auth");
     commit("clearUser");
+    commit("clearAuthError");
+  } catch (e) {
+    commit("setAuthError", e);
+    throw e;
+  }
+}
+
+export async function updateUserName({ state, commit }, { profileName }) {
+  const auth = getAuth();
+  const user = auth.currentUser;
+  const database = getDatabase();
+  const userRef = ref(database, "users/" + user.uid);
+  try {
+    await update(userRef, {
+      name: profileName,
+    });
+    commit("setUser", { ...state.user, name: profileName });
     commit("clearAuthError");
   } catch (e) {
     commit("setAuthError", e);

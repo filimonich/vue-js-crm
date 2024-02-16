@@ -1,8 +1,13 @@
 import { userData } from "@/store/actions/userData";
 import { updateCategory } from "@/store/actions/updateCategory";
-import { login, register, logout } from "@/store/actions/authLogic";
 import { createCategory } from "@/store/actions/createCategory";
 import { createNewRecord } from "@/store/actions/createNewRecord";
+import {
+  login,
+  register,
+  logout,
+  updateUserName,
+} from "@/store/actions/authLogic";
 
 export default {
   namespaced: true,
@@ -77,6 +82,9 @@ export default {
         { state, commit },
         { categoryIndex, recordName, limit, selectedType }
       );
+    },
+    async updateUserName({ state, commit }, profileName) {
+      await updateUserName({ state, commit }, { profileName });
     },
   },
 };
