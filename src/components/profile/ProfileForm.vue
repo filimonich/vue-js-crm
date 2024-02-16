@@ -1,9 +1,14 @@
 <template>
-  <form class="form">
+  <form class="form" @submit.prevent="updateName">
     <div class="input-field">
-      <input id="description" type="text" />
+      <input id="description" type="text" v-model.trim="profileName" />
       <label for="description">Имя</label>
-      <span class="helper-text invalid">name</span>
+      <span
+        v-for="(error, errorType) in v$.name.$errors"
+        :key="errorType"
+        class="helper-text invalid"
+        >{{ error.$message }}</span
+      >
     </div>
 
     <button class="btn waves-effect waves-light" type="submit">
@@ -13,4 +18,39 @@
   </form>
 </template>
 
-<script setup></script>
+<script setup>
+import { getCurrentInstance, ref, computed, onMounted, onUpdated } from "vue";
+import { useStore } from "vuex";
+import { useVuelidate } from "@vuelidate/core";
+import { getNameValidationRules } from "@/validation/validationRules";
+import messages from "@/plugins/messages";
+
+const profileName = ref("");
+const store = useStore();
+const categories = computed(() => store.state.auth.categories);
+const { proxy } = getCurrentInstance();
+
+onMounted(() => {
+  M.FormSelect.init(document.querySelectorAll("select"));
+});
+
+onUpdated(() => {
+  M.FormSelect.init(document.querySelectorAll("select"));
+});
+
+const rules = {
+  name: getNameValidationRules(),
+};
+
+const v$ = useVuelidate(rules, {
+  name: profileName,
+});
+
+const updateName = async () => {
+  if (v$.value.$invalid) {
+    v$.value.$touch();
+    console.log(profileName.value);
+    return;
+  }
+};
+</script>
