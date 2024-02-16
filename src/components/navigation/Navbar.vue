@@ -44,6 +44,7 @@ import { useRouter } from "vue-router";
 import { getCurrentInstance, onMounted, ref, computed, watchEffect } from "vue";
 import { updateFormattedDate } from "@/utils/date.utils.js";
 import messages from "@/plugins/messages";
+import M from "materialize-css";
 
 let instance;
 let intervalId;
@@ -65,8 +66,13 @@ onMounted(() => {
     formattedDate.value = updateFormattedDate();
   }, 1000);
 
-  const dropdownElement = document.querySelector(".dropdown-trigger");
-  M.Dropdown.init(dropdownElement);
+  const dropdownElements = document.querySelectorAll(".dropdown-trigger");
+  M.Dropdown.init(dropdownElements, {
+    constrainWidth: false,
+    alignment: "left", // Например, выравнивание выпадающего списка
+    // hover: true, // Выпадающее меню будет активироваться при наведении
+    // Другие опции...
+  });
 });
 
 const toggleSidenav = () => {
