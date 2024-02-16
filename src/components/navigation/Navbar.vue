@@ -15,7 +15,7 @@
             href="#"
             data-target="dropdown"
           >
-            USER NAME
+            {{ displayName }}
             <i class="material-icons right">arrow_drop_down</i>
           </a>
 
@@ -41,7 +41,7 @@
 <script setup>
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
-import { getCurrentInstance, onMounted, ref } from "vue";
+import { getCurrentInstance, onMounted, ref, computed, watchEffect } from "vue";
 import { updateFormattedDate } from "@/utils/date.utils.js";
 import messages from "@/plugins/messages";
 
@@ -51,6 +51,12 @@ const formattedDate = ref("");
 const store = useStore();
 const router = useRouter();
 const { proxy } = getCurrentInstance();
+const auth = computed(() => store.state.auth);
+let displayName = ref("Loading...");
+
+watchEffect(() => {
+  displayName.value = auth.value?.name || "Loading...";
+});
 
 onMounted(() => {
   instance = getCurrentInstance();
