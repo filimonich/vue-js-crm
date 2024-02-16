@@ -69,9 +69,7 @@ onMounted(() => {
   const dropdownElements = document.querySelectorAll(".dropdown-trigger");
   M.Dropdown.init(dropdownElements, {
     constrainWidth: false,
-    alignment: "left", // Например, выравнивание выпадающего списка
-    // hover: true, // Выпадающее меню будет активироваться при наведении
-    // Другие опции...
+    alignment: "left",
   });
 });
 
