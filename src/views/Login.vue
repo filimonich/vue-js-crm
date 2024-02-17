@@ -80,12 +80,15 @@ import {
   getPasswordValidationRules,
 } from "@/validation/validationRules";
 import messages from "@/plugins/messages";
+import { setTitle } from "@/utils/title.utils";
 
 export default {
+  created() {
+    setTitle("Логин");
+  },
   setup() {
     return { v$: useVuelidate() };
   },
-
   data() {
     return {
       form: {
@@ -94,7 +97,6 @@ export default {
       },
     };
   },
-
   validations() {
     return {
       form: {
@@ -121,6 +123,7 @@ export default {
           email: this.form.email,
           password: this.form.password,
         });
+        setTitle("Счёт");
         this.$router.push("/");
       } catch (e) {}
     },

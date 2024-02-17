@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="page-title">
-      <h3>Категории</h3>
+      <h3>{{ tabTitle }}</h3>
     </div>
     <section>
       <div class="row">
@@ -12,7 +12,7 @@
 </template>
 
 <script setup>
-import { defineAsyncComponent } from "vue";
+import { defineAsyncComponent, ref } from "vue";
 import Loader from "@/components/loader/Loader.vue";
 
 const AsyncEditCategory = defineAsyncComponent({
@@ -21,4 +21,6 @@ const AsyncEditCategory = defineAsyncComponent({
   delay: 0,
   timeout: 3000,
 });
+
+const tabTitle = ref("Категории");
 </script>

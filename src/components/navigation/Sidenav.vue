@@ -5,21 +5,23 @@
       :key="item.path"
       :class="{ active: $route.path === item.path }"
     >
-      <a
-        class="waves-effect waves-orange pointer"
-        @click="navigateTo(item.path)"
-        >{{ item.label }}</a
-      >
+      <a class="waves-effect waves-orange pointer" @click="navigateTo(item)">{{
+        item.label
+      }}</a>
     </li>
   </ul>
 </template>
 
 <script setup>
-import { useRouter } from "vue-router";
-import { defineProps } from "vue";
+import { useRouter, useRoute } from "vue-router";
+import { defineProps, watch } from "vue";
+import { setTitle } from "@/utils/title.utils";
 
 const router = useRouter();
-const props = defineProps(["isOpen"]);
+const route = useRoute();
+const props = defineProps({
+  isOpen: Boolean,
+});
 
 const navigationItems = [
   { label: "Счёт", path: "/" },
@@ -29,7 +31,17 @@ const navigationItems = [
   { label: "Категории", path: "/categories" },
 ];
 
-function navigateTo(route) {
-  router.push(route);
+function navigateTo(item) {
+  router.push(item.path);
+  setTitle(item.label);
 }
+
+watch(
+  () => route.path,
+  newPath => {
+    const item = navigationItems.find(item => item.path === newPath);
+    const title = item ? item.label : "CRM";
+    setTitle(title);
+  }
+);
 </script>

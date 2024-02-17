@@ -113,8 +113,12 @@ import {
   getPasswordValidationRules,
   getNameValidationRules,
 } from "@/validation/validationRules";
+import { setTitle } from "@/utils/title.utils";
 
 export default {
+  created() {
+    setTitle("Регистрация");
+  },
   setup() {
     return { v$: useVuelidate() };
   },
@@ -150,6 +154,7 @@ export default {
           password: this.form.password,
           name: this.form.name,
         });
+        setTitle("Счёт");
         this.$router.push("/");
       } catch (e) {}
     },

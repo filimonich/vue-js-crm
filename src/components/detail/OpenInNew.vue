@@ -55,7 +55,7 @@
   </div>
 </template>
 <script setup>
-import { defineProps, computed } from "vue";
+import { defineProps, computed, onMounted } from "vue";
 import { useStore } from "vuex";
 
 const store = useStore();
@@ -79,4 +79,16 @@ const formatCurrency = (value, currencyCode = "RUB") => {
     minimumFractionDigits: 2,
   }).format(value);
 };
+
+const tabTitle = computed(() => {
+  return categories.value[numericCategoryIndex.value].records[
+    numericRecordIndex.value
+  ].selectedType === "income"
+    ? "Доход"
+    : "Расход";
+});
+
+onMounted(() => {
+  document.title = `${tabTitle.value} || CRM`;
+});
 </script>

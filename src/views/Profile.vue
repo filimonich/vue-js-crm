@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="page-title">
-      <h3>Профиль</h3>
+      <h3>{{ tabTitle }}</h3>
     </div>
     <AsyncProfileForm />
   </div>
@@ -10,6 +10,7 @@
 <script setup>
 import { defineAsyncComponent } from "vue";
 import Loader from "@/components/loader/Loader.vue";
+import { setTitle } from "@/utils/title.utils";
 
 const AsyncProfileForm = defineAsyncComponent({
   loader: () => import("@/components/profile/ProfileForm.vue"),
@@ -17,4 +18,7 @@ const AsyncProfileForm = defineAsyncComponent({
   delay: 0,
   timeout: 3000,
 });
+
+const tabTitle = "Профиль";
+setTitle(tabTitle);
 </script>
