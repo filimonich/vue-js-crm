@@ -8,9 +8,10 @@
 </template>
 
 <script setup>
-import { defineAsyncComponent } from "vue";
+import { defineAsyncComponent, computed, watchEffect } from "vue";
 import Loader from "@/components/loader/Loader.vue";
 import { setTitle } from "@/utils/title.utils";
+import { useI18n } from "vue-i18n";
 
 const AsyncProfileForm = defineAsyncComponent({
   loader: () => import("@/components/profile/ProfileForm.vue"),
@@ -19,6 +20,8 @@ const AsyncProfileForm = defineAsyncComponent({
   timeout: 3000,
 });
 
-const tabTitle = "Профиль";
-setTitle(tabTitle);
+const { t } = useI18n();
+const tabTitle = computed(() => t("userProfile.profileTitle"));
+
+watchEffect(() => setTitle(tabTitle.value));
 </script>

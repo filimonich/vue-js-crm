@@ -8,6 +8,7 @@ import "materialize-css";
 import tooltipDirective from "@/directives/tooltip.directive";
 import ToastUtil from "@/plugins/toast.plugin";
 import VueApexCharts from "vue3-apexcharts";
+import i18n from "./i18n";
 import { initializeApp } from "firebase/app";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import Paginate from "vuejs-paginate-next";
@@ -32,6 +33,7 @@ onAuthStateChanged(auth, user => {
   store.dispatch("auth/userData");
   if (!app) {
     app = createApp(App);
+    app.use(i18n);
     app.use(store);
     app.use(router);
     app.use(ToastUtil);
