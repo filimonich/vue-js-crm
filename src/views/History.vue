@@ -1,16 +1,18 @@
 <template>
   <div>
     <div class="page-title">
-      <h3>История записей</h3>
+      <h3>{{ $t("history.title") }}</h3>
     </div>
     <template v-if="!getCategoryName(0) || getCategoryName(0) === '-'">
       <div class="center">
         <div class="margin">
-          <p class="card-title">Нет записей</p>
+          <p class="card-title">{{ $t("history.empty") }}</p>
         </div>
         <div>
           <router-link to="/record">
-            <a class="btn waves-effect waves-light">новая запись</a>
+            <a class="btn waves-effect waves-light">{{
+              $t("other.newRecord")
+            }}</a>
           </router-link>
         </div>
       </div>

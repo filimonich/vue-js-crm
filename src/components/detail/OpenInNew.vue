@@ -1,12 +1,14 @@
 <template>
   <div class="breadcrumb-wrap">
-    <router-link to="/history" class="breadcrumb">История</router-link>
+    <router-link to="/history" class="breadcrumb">{{
+      $t("sidenav.history")
+    }}</router-link>
     <a class="breadcrumb">
       {{
         categories[numericCategoryIndex].records[numericRecordIndex]
           .selectedType === "income"
-          ? "Доход"
-          : "Расход"
+          ? $t("history.income")
+          : $t("history.outcome")
       }}
     </a>
   </div>
@@ -29,14 +31,14 @@
       >
         <div class="card-content white-text">
           <p>
-            Описание:
+            {{ $t("history.description") }}:
             {{
               categories[numericCategoryIndex].records[numericRecordIndex]
                 .name || "-"
             }}
           </p>
           <p>
-            Сумма:
+            {{ $t("history.amount") }}:
             {{
               formatCurrency(
                 categories[numericCategoryIndex].records[numericRecordIndex]
@@ -44,7 +46,10 @@
               )
             }}
           </p>
-          <p>Категория: {{ categories[numericCategoryIndex].name || "-" }}</p>
+          <p>
+            {{ $t("history.category") }}:
+            {{ categories[numericCategoryIndex].name || "-" }}
+          </p>
           <small>{{
             categories[numericCategoryIndex].records[numericRecordIndex]
               .createdDate || "-"
@@ -57,7 +62,9 @@
 <script setup>
 import { defineProps, computed, onMounted } from "vue";
 import { useStore } from "vuex";
+import { useI18n } from "vue-i18n";
 
+const { t } = useI18n();
 const store = useStore();
 const categories = computed(() => store.state.auth.categories);
 const props = defineProps(["categoryIndex", "recordIndex"]);
@@ -84,11 +91,11 @@ const tabTitle = computed(() => {
   return categories.value[numericCategoryIndex.value].records[
     numericRecordIndex.value
   ].selectedType === "income"
-    ? "Доход"
-    : "Расход";
+    ? t("history.income")
+    : t("history.outcome");
 });
 
 onMounted(() => {
-  document.title = `${tabTitle.value} || CRM`;
+  document.title = `${tabTitle.value} | CRM`;
 });
 </script>

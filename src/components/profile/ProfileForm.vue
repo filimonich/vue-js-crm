@@ -27,7 +27,7 @@
       type="submit"
       @click="logSwitchValue"
     >
-      {{ t("userProfile.update") }}
+      {{ t("other.update") }}
       <i class="material-icons right">send</i>
     </button>
   </form>

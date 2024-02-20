@@ -1,11 +1,40 @@
 {
+  "history": {
+    "title": "Record history",
+    "amount": "Amount",
+    "date": "Date",
+    "category": "Category",
+    "type": "Type",
+    "open": "Open",
+    "income": "Income",
+    "outcome": "Outcome",
+    "next": "Next",
+    "prev": "Prev",
+    "empty":"There are no records",
+    "description": "Description"
+  },
+  "sidenav": {
+    "bill": "Account",
+    "history": "History",
+    "planning": "Planning",
+    "newRecord": "New record",
+    "categories": "Categories"
+  },
+  "navbar": {
+    "profile": "Profile",
+    "logout": "logout"
+  },
   "locale": {
     "en": "ENGLISH",
     "ru": "RUSSIAN"
   },
   "userProfile": {
     "profileTitle": "Profile",
-    "profileName": "Name",
-    "update": "Update"
+    "profileName": "Name"
+  },
+  "other": {
+    "update": "Update",
+    "newRecord": "New record",
+    "createNewRecord": "Create new record"
   }
 }

@@ -1,11 +1,40 @@
 {
+  "history": {
+    "title": "История записей",
+    "amount": "Сумма",
+    "date": "Дата",
+    "category": "Категория",
+    "type": "Тип",
+    "open": "Открыть",
+    "income": "Доход",
+    "outcome": "Расход",
+    "next": "Вперёд",
+    "prev": "Назад",
+    "empty":"Нет записей",
+    "description": "Описание"
+  },
+  "sidenav": {
+    "bill": "Счёт",
+    "history": "История",
+    "planning": "Планирование",
+    "newRecord": "Новая запись",
+    "categories": "Категории"
+  },
+  "navbar": {
+    "profile": "Профиль",
+    "logout": "Выйти"
+  },
   "locale": {
     "en": "АНГЛИЙСКИЙ",
     "ru": "РУССКИЙ"
   },
   "userProfile": {
     "profileTitle": "Профиль",
-    "profileName": "Имя",
-    "update": "Обновить"
+    "profileName": "Имя"
+  },
+  "other": {
+    "update": "Обновить",
+    "newRecord": "Новая запись",
+    "createNewRecord": "Создать новую запись"
   }
 }

@@ -4,11 +4,11 @@
       <thead>
         <tr>
           <th>#</th>
-          <th>Сумма</th>
-          <th>Дата</th>
-          <th>Категория</th>
-          <th>Тип</th>
-          <th>Открыть</th>
+          <th>{{ $t("history.amount") }}</th>
+          <th>{{ $t("history.date") }}</th>
+          <th>{{ $t("history.category") }}</th>
+          <th>{{ $t("history.type") }}</th>
+          <th>{{ $t("history.open") }}</th>
         </tr>
       </thead>
       <tbody>
@@ -33,8 +33,8 @@
     <paginate
       :page-count="totalPages"
       :click-handler="handlePageChange"
-      :prev-text="'Prev'"
-      :next-text="'Next'"
+      :prev-text="$t('history.prev')"
+      :next-text="$t('history.next')"
       :container-class="'pagination'"
       :page-class="'waves-effect'"
       :prev-link-class="'waves-effect'"
@@ -48,7 +48,9 @@
 import { ref, computed } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
+import { useI18n } from "vue-i18n";
 
+const { t } = useI18n();
 const router = useRouter();
 const store = useStore();
 const categories = computed(() => store.state.auth.categories);
@@ -69,7 +71,7 @@ const getRecordTypeClass = record => {
 };
 
 const getRecordTypeText = selectedType => {
-  return selectedType === "income" ? "Доход" : "Расход";
+  return selectedType === "income" ? t("history.income") : t("history.outcome");
 };
 
 const openDetail = (record, index) => {

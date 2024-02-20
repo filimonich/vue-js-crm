@@ -5,43 +5,42 @@
       :key="item.path"
       :class="{ active: $route.path === item.path }"
     >
-      <a class="waves-effect waves-orange pointer" @click="navigateTo(item)">{{
-        item.label
-      }}</a>
+      <a class="waves-effect waves-orange pointer" @click="navigateTo(item)">
+        {{ $t(item.label) }}
+      </a>
     </li>
   </ul>
 </template>
 
 <script setup>
 import { useRouter, useRoute } from "vue-router";
-import { defineProps, watch } from "vue";
+import { defineProps, ref, watchEffect } from "vue";
 import { setTitle } from "@/utils/title.utils";
+import { useI18n } from "vue-i18n";
 
+const { t } = useI18n();
 const router = useRouter();
 const route = useRoute();
 const props = defineProps({
   isOpen: Boolean,
 });
 
-const navigationItems = [
-  { label: "Счёт", path: "/" },
-  { label: "История", path: "/history" },
-  { label: "Планирование", path: "/planning" },
-  { label: "Новая запись", path: "/record" },
-  { label: "Категории", path: "/categories" },
-];
+const navigationItems = ref([
+  { label: "sidenav.bill", path: "/" },
+  { label: "sidenav.history", path: "/history" },
+  { label: "sidenav.planning", path: "/planning" },
+  { label: "sidenav.newRecord", path: "/record" },
+  { label: "sidenav.categories", path: "/categories" },
+]);
 
 function navigateTo(item) {
   router.push(item.path);
-  setTitle(item.label);
+  setTitle(t(item.label));
 }
 
-watch(
-  () => route.path,
-  newPath => {
-    const item = navigationItems.find(item => item.path === newPath);
-    const title = item ? item.label : "CRM";
-    setTitle(title);
-  }
-);
+watchEffect(() => {
+  navigationItems.value.forEach(item => {
+    setTitle(t(item.label));
+  });
+});
 </script>
