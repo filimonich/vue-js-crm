@@ -3,7 +3,7 @@
     <div class="input-field">
       <input id="description" type="text" v-model.trim="profileName" />
       <label for="description" :class="{ active: profileName !== '' }">{{
-        t("userProfile.profileName")
+        $t("userProfile.profileName")
       }}</label>
       <span
         v-for="(error, errorType) in v$.name.$errors"
@@ -15,10 +15,10 @@
 
     <div class="switch">
       <label>
-        <span>РУССКИЙ</span>
-        <input type="checkbox" :checked="isEnglishSelected" />
+        <span>{{ $t("locale.ru") }}</span>
+        <input type="checkbox" v-model="switchPosition" />
         <span class="lever"></span>
-        <span>ENGLISH</span>
+        <span>{{ $t("locale.en") }}</span>
       </label>
     </div>
 
@@ -50,24 +50,27 @@ import { useI18n } from "vue-i18n";
 import Tr from "@/i18n/translation";
 
 const { t, locale } = useI18n();
-const isEnglishSelected = computed(() => locale.value === "en");
-
-console.log("newLocale", locale.value);
-const toggleLocale = () => {
-  const newLocale = locale.value === "ru" ? "en" : "ru";
-  Tr.switchLanguage(newLocale);
-};
-
-let supportedLocales;
-(async () => {
-  supportedLocales = await Tr.getSupportedLocales();
-  console.log("supportedLocales", supportedLocales);
-})();
-
+const switchPosition = Tr.guessDefaultLocale() === "ru" ? false : true;
+const originalSwitchPosition = ref(switchPosition);
 const profileName = ref("");
 const store = useStore();
 const { proxy } = getCurrentInstance();
 const auth = computed(() => store.state.auth);
+
+const toggleLocale = () => {
+  const newLocale = locale.value === "ru" ? "en" : "ru";
+  Tr.switchLanguage(newLocale);
+  localStorage.setItem("user-locale", newLocale);
+};
+
+onMounted(() => {
+  const userLocale = localStorage.getItem("user-locale");
+  if (userLocale) {
+    Tr.switchLanguage(userLocale);
+  } else {
+    toggleLocale();
+  }
+});
 
 watchEffect(() => {
   profileName.value = auth.value?.name || "Loading...";
@@ -100,7 +103,10 @@ const updateName = async () => {
 
   try {
     await store.dispatch("auth/updateUserName", profileName.value);
-    toggleLocale();
+    if (originalSwitchPosition.value !== switchValue) {
+      toggleLocale();
+      originalSwitchPosition.value = switchValue;
+    }
     proxy.$showToast(messages.updateName);
   } catch (e) {}
 };

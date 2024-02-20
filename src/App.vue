@@ -9,12 +9,19 @@ import MainLayout from "@/layouts/MainLayout";
 import EmptyLayout from "@/layouts/EmptyLayout";
 import { useRoute } from "vue-router";
 import { ref, onMounted } from "vue";
+import Tr from "@/i18n/translation";
+
 const route = useRoute();
 const layout = ref(null);
 
 onMounted(() => {
-  layout.value = getLayout();
+  setHtmlLangAttribute();
 });
+
+function setHtmlLangAttribute() {
+  const locale = Tr.guessDefaultLocale();
+  document.querySelector("html").setAttribute("lang", locale);
+}
 
 function getLayout() {
   return route.meta.layout === "main" ? MainLayout : EmptyLayout;

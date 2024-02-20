@@ -1,4 +1,8 @@
 {
+  "locale": {
+    "en": "АНГЛИЙСКИЙ",
+    "ru": "РУССКИЙ"
+  },
   "userProfile": {
     "profileTitle": "Профиль",
     "profileName": "Имя",
