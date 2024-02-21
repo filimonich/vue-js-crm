@@ -1,7 +1,7 @@
 <template>
   <form class="card auth-card" @submit.prevent="onSubmit">
     <div class="card-content">
-      <span class="card-title">Домашняя бухгалтерия</span>
+      <span class="card-title">{{ $t("login.accounting") }}</span>
       <div class="input-field">
         <input
           id="email"
@@ -15,7 +15,7 @@
           }"
           v-model="v$.form.email.$model"
         />
-        <label for="email">Email</label>
+        <label for="email">{{ $t("login.email") }}</label>
         <small
           class="helper-text"
           v-for="(error, index) of v$.form.email.$errors"
@@ -42,7 +42,7 @@
           }"
           v-model="v$.form.password.$model"
         />
-        <label for="password">Пароль</label>
+        <label for="password">{{ $t("login.password") }}</label>
         <small
           class="helper-text"
           v-for="(error, index) of v$.form.password.$errors"
@@ -69,7 +69,7 @@
           }"
           v-model="v$.form.name.$model"
         />
-        <label for="name">Имя</label>
+        <label for="name">{{ $t("login.name") }}</label>
         <small
           class="helper-text"
           v-for="(error, index) of v$.form.name.$errors"
@@ -86,21 +86,21 @@
       <p>
         <label>
           <input type="checkbox" v-model="form.agreeWithRules" />
-          <span>С правилами согласен</span>
+          <span>{{ $t("login.agreeRules") }}</span>
         </label>
       </p>
     </div>
     <div class="card-action">
       <div>
         <button class="btn waves-effect waves-light auth-submit" type="submit">
-          Зарегистрироваться
+          {{ $t("login.register") }}
           <i class="material-icons right">send</i>
         </button>
       </div>
 
       <p class="center">
-        Уже есть аккаунт?
-        <router-link to="/login">Войти!</router-link>
+        {{ $t("login.alreadyAccount") }}?
+        <router-link to="/login">{{ $t("login.enter") }}!</router-link>
       </p>
     </div>
   </form>
@@ -114,13 +114,16 @@ import {
   getNameValidationRules,
 } from "@/validation/validationRules";
 import { setTitle } from "@/utils/title.utils";
+import { useI18n } from "vue-i18n";
 
 export default {
   created() {
-    setTitle("Регистрация");
+    const { t } = useI18n();
+    setTitle(t("login.registerTitle"));
   },
   setup() {
-    return { v$: useVuelidate() };
+    const { t } = useI18n();
+    return { v$: useVuelidate(), t };
   },
   data() {
     return {
@@ -154,7 +157,7 @@ export default {
           password: this.form.password,
           name: this.form.name,
         });
-        setTitle("Счёт");
+        setTitle(this.t("home.bill"));
         this.$router.push("/");
       } catch (e) {}
     },

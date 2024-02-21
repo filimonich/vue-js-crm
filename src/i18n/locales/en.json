@@ -1,4 +1,54 @@
 {
+  "login": {
+    "title": "Login",
+    "registerTitle": "Register",
+    "accounting": "Home accounting",
+    "email": "Mail",
+    "name": "Name",
+    "password": "Password",
+    "enter": "Log in",
+    "noAccount": "No account",
+    "register": "Register",
+    "agreeRules": "I agree with the rules",
+    "alreadyAccount": "Already have an account"
+  },
+  "categories": {
+    "title": "Categories",
+    "edit": "Edit",
+    "select": "Select category",
+    "categoryName": "Title",
+    "limit": "Limit",
+    "update": "Update",
+    "create": "Create"
+  },
+  "record": {
+    "title": "New record",
+    "create": "Create",
+    "noCategories": "No categories",
+    "newCategory": "new category",
+    "yourOption": "Choose your option",
+    "selectCategory": "Choose a category",
+    "income": "Income",
+    "outcome": "Outcome",
+    "amount": "Amount",
+    "description": "Description"
+  },
+  "planning": {
+    "title": "Planning",
+    "noCategories": "There are no categories",
+    "newCategory": "new category",
+    "outOf": "out of",
+    "categoryTyped": "The category is typed",
+    "remainsDial": "It remains to dial"
+  },
+  "home": {
+    "bill": "Bill",
+    "billCurrency": "Bill currency",
+    "rate": "Currency exchange rate",
+    "currency": "Currency",
+    "exchange": "Exchange",
+    "date": "Date"
+  },
   "history": {
     "title": "Record history",
     "amount": "Amount",
@@ -10,11 +60,11 @@
     "outcome": "Outcome",
     "next": "Next",
     "prev": "Prev",
-    "empty":"There are no records",
+    "empty": "There are no records",
     "description": "Description"
   },
   "sidenav": {
-    "bill": "Account",
+    "bill": "Bill",
     "history": "History",
     "planning": "Planning",
     "newRecord": "New record",
@@ -36,5 +86,8 @@
     "update": "Update",
     "newRecord": "New record",
     "createNewRecord": "Create new record"
+  },
+  "date": {
+    "language": "en-En"
   }
 }

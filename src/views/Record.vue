@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="page-title">
-      <h3>Новая запись</h3>
+      <h3>{{ $t("record.title") }}</h3>
     </div>
     <AsyncEditRecord />
   </div>

@@ -1,12 +1,11 @@
 <template>
   <div>
     <div class="page-title">
-      <h3>Планирование</h3>
+      <h3>{{ $t("planning.title") }}</h3>
       <h4>{{ formatCurrency(bill, "RUB") }}</h4>
     </div>
 
     <AsyncDeterminate />
-    
   </div>
 </template>
 

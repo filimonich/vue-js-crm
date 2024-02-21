@@ -47,7 +47,9 @@ import { getCurrentInstance, onMounted, ref, computed, watchEffect } from "vue";
 import { updateFormattedDate } from "@/utils/date.utils.js";
 import messages from "@/plugins/messages";
 import M from "materialize-css";
+import { useI18n } from "vue-i18n";
 
+const { t } = useI18n();
 let instance;
 let intervalId;
 const formattedDate = ref("");
@@ -63,9 +65,9 @@ watchEffect(() => {
 
 onMounted(() => {
   instance = getCurrentInstance();
-  formattedDate.value = updateFormattedDate();
+  formattedDate.value = updateFormattedDate(t("date.language"));
   intervalId = setInterval(() => {
-    formattedDate.value = updateFormattedDate();
+    formattedDate.value = updateFormattedDate(t("date.language"));
   }, 1000);
 
   const dropdownElements = document.querySelectorAll(".dropdown-trigger");

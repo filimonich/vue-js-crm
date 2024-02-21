@@ -1,4 +1,54 @@
 {
+  "login": {
+    "title": "Логин",
+    "registerTitle": "Регистрация",
+    "accounting": "Домашняя бухгалтерия",
+    "email": "Почта",
+    "name": "Имя",
+    "password": "Пароль",
+    "enter": "Войти",
+    "noAccount": "Нет аккаунта",
+    "register": "Зарегистрироваться",
+    "agreeRules": "С правилами согласен",
+    "alreadyAccount": "Уже есть аккаунт"
+  },
+  "categories": {
+    "title": "Категории",
+    "edit": "Редактировать",
+    "select": "Выберите категорию",
+    "categoryName": "Название",
+    "limit": "Лимит",
+    "update": "Обновить",
+    "create": "Создать"
+  },
+  "record": {
+    "title": "Новая запись",
+    "create": "Создать",
+    "noCategories": "Нет категорий",
+    "newCategory": "новая категория",
+    "yourOption": "Выберите свой вариант",
+    "selectCategory": "Выберите категорию",
+    "income": "Доход",
+    "outcome": "Расход",
+    "amount": "Сумма",
+    "description": "Описание"
+  },
+  "planning": {
+    "title": "Планирование",
+    "noCategories": "Нет категорий",
+    "newCategory": "новая категория",
+    "outOf": "из",
+    "categoryTyped": "Категория набрана",
+    "remainsDial": "Осталось набрать"
+  },
+  "home": {
+    "bill": "Счёт",
+    "billCurrency": "Счет в валюте",
+    "rate": "Курс валют",
+    "currency": "Валюта",
+    "exchange": "Курс",
+    "date": "Дата"
+  },
   "history": {
     "title": "История записей",
     "amount": "Сумма",
@@ -10,7 +60,7 @@
     "outcome": "Расход",
     "next": "Вперёд",
     "prev": "Назад",
-    "empty":"Нет записей",
+    "empty": "Нет записей",
     "description": "Описание"
   },
   "sidenav": {
@@ -36,5 +86,8 @@
     "update": "Обновить",
     "newRecord": "Новая запись",
     "createNewRecord": "Создать новую запись"
+  },
+  "date" : {
+    "language": "ru-RU"
   }
 }

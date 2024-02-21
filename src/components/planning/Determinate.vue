@@ -2,11 +2,13 @@
   <template v-if="isCategoriesEmpty">
     <div class="center">
       <div class="margin">
-        <p class="card-title">Нет категорий</p>
+        <p class="card-title">{{ $t("planning.noCategories") }}</p>
       </div>
       <div>
         <router-link to="/categories">
-          <a class="btn waves-effect waves-light">новая категория</a>
+          <a class="btn waves-effect waves-light">{{
+            $t("planning.newCategory")
+          }}</a>
         </router-link>
       </div>
     </div>
@@ -16,7 +18,8 @@
       <div v-for="(category, index) in categories" :key="index">
         <p>
           <strong>{{ category.name }}: </strong>
-          {{ formatCurrency(category.amount) }} из
+          {{ formatCurrency(category.amount) }}
+          {{ $t("planning.outOf") }}
           {{ formatCurrency(category.limit) }}
         </p>
         <div
@@ -42,7 +45,9 @@
 <script setup>
 import { useStore } from "vuex";
 import { computed } from "vue";
+import { useI18n } from "vue-i18n";
 
+const { t } = useI18n();
 const store = useStore();
 const categories = computed(() => store.state.auth.categories);
 
@@ -58,9 +63,9 @@ function progressWidth(amount, limit) {
 function getTooltipText(amount, limit) {
   const width = progressWidth(amount, limit);
   if (width < 100) {
-    return `Осталось набрать: ${formatCurrency(limit - amount)}`;
+    return `${t("planning.remainsDial")}: ${formatCurrency(limit - amount)}`;
   } else {
-    return "Категория набрана";
+    return t("planning.categoryTyped");
   }
 }
 

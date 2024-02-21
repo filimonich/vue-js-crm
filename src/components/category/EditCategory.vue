@@ -2,7 +2,7 @@
   <div class="col s12 m6" v-if="selectedCategory">
     <div>
       <div class="page-subtitle">
-        <h4>Редактировать</h4>
+        <h4>{{ $t("categories.edit") }}</h4>
       </div>
 
       <form @submit.prevent="updateCategory">
@@ -16,14 +16,14 @@
               {{ category.name }}
             </option>
           </select>
-          <label>Выберите категорию</label>
+          <label>{{ $t("categories.select") }}</label>
         </div>
 
         <div class="input-field">
           <input type="text" id="name" v-model.trim="editableCategory.name" />
-          <label :class="{ active: editableCategory.name !== '' }" for="name"
-            >Название</label
-          >
+          <label :class="{ active: editableCategory.name !== '' }" for="name">
+            {{ $t("categories.categoryName") }}
+          </label>
           <span
             v-for="(error, errorType) in v$.name.$errors"
             :key="errorType"
@@ -38,9 +38,9 @@
             type="number"
             v-model.number="editableCategory.limit"
           />
-          <label :class="{ active: editableCategory.limit !== '' }" for="limit"
-            >Лимит</label
-          >
+          <label :class="{ active: editableCategory.limit !== '' }" for="limit">
+            {{ $t("categories.limit") }}
+          </label>
           <span
             v-for="(error, errorType) in v$.limit.$errors"
             :key="errorType"
@@ -50,7 +50,7 @@
         </div>
 
         <button class="btn waves-effect waves-light" type="submit">
-          Обновить
+          {{ $t("categories.update") }}
           <i class="material-icons right">send</i>
         </button>
       </form>

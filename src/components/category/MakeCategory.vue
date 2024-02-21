@@ -2,12 +2,12 @@
   <div class="col s12 m6">
     <div>
       <div class="page-subtitle">
-        <h4>Создать</h4>
+        <h4>{{ $t("categories.create") }}</h4>
       </div>
       <form @submit.prevent="createCategory">
         <div class="input-field">
           <input id="name" type="text" v-model.trim="categoryName" />
-          <label for="name">Название</label>
+          <label for="name">{{ $t("categories.categoryName") }}</label>
           <span
             v-for="(error, errorType) in v$.name.$errors"
             :key="errorType"
@@ -17,7 +17,9 @@
         </div>
         <div class="input-field">
           <input id="limit" type="number" v-model.number="limit" />
-          <label :class="{ active: limit !== '' }" for="limit">Лимит</label>
+          <label :class="{ active: limit !== '' }" for="limit">
+            {{ $t("categories.limit") }}
+          </label>
           <span
             v-for="(error, errorType) in v$.limit.$errors"
             :key="errorType"
@@ -26,7 +28,7 @@
           >
         </div>
         <button class="btn waves-effect waves-light" type="submit">
-          Создать
+          {{ $t("categories.create") }}
           <i class="material-icons right">send</i>
         </button>
       </form>
@@ -35,7 +37,7 @@
 </template>
 
 <script setup>
-import { getCurrentInstance, ref, onMounted, onUpdated } from "vue";
+import { getCurrentInstance, ref } from "vue";
 import { useStore } from "vuex";
 import { useVuelidate } from "@vuelidate/core";
 import {
@@ -70,7 +72,6 @@ const categoryExists = name => {
 const createCategory = async () => {
   if (v$.value.$invalid) {
     v$.value.$touch();
-    console.log("Form submitted:", categoryName.value, limit.value);
     return;
   }
 

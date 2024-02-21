@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="page-title">
-      <h3>Счет</h3>
+      <h3>{{ $t("home.bill") }}</h3>
 
       <button
         class="btn waves-effect waves-light btn-small"
@@ -16,7 +16,7 @@
       <div class="col s12 m6 l4">
         <div class="card light-blue bill-card">
           <div class="card-content white-text">
-            <span class="card-title">Счет в валюте</span>
+            <span class="card-title">{{ $t("home.billCurrency") }}</span>
 
             <p class="currency-line">
               <span>{{ formatCurrency(bill, "RUB") }}</span>
@@ -35,14 +35,14 @@
         <div class="card orange darken-3 bill-card">
           <div class="card-content white-text">
             <div class="card-header">
-              <span class="card-title">Курс валют</span>
+              <span class="card-title">{{ $t("home.rate") }}</span>
             </div>
             <table>
               <thead>
                 <tr>
-                  <th>Валюта</th>
-                  <th>Курс</th>
-                  <th>Дата</th>
+                  <th>{{ $t("home.currency") }}</th>
+                  <th>{{ $t("home.exchange") }}</th>
+                  <th>{{ $t("home.date") }}</th>
                 </tr>
               </thead>
 

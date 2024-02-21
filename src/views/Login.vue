@@ -1,7 +1,7 @@
 <template>
   <form class="card auth-card" @submit.prevent="onSubmit">
     <div class="card-content">
-      <span class="card-title">Домашняя бухгалтерия</span>
+      <span class="card-title">{{ $t("login.accounting") }}</span>
       <div class="input-field">
         <input
           id="email"
@@ -15,7 +15,7 @@
           }"
           v-model="v$.form.email.$model"
         />
-        <label for="email">Email</label>
+        <label for="email">{{ $t("login.email") }}</label>
         <small
           class="helper-text"
           v-for="(error, index) of v$.form.email.$errors"
@@ -42,7 +42,7 @@
           }"
           v-model="v$.form.password.$model"
         />
-        <label for="password">Пароль</label>
+        <label for="password">{{ $t("login.password") }}</label>
         <small
           class="helper-text"
           v-for="(error, index) of v$.form.password.$errors"
@@ -60,14 +60,16 @@
     <div class="card-action">
       <div>
         <button class="btn waves-effect waves-light auth-submit" type="submit">
-          Войти
+          {{ $t("login.enter") }}
           <i class="material-icons right">send</i>
         </button>
       </div>
 
       <p class="center">
-        Нет аккаунта?
-        <router-link to="/register">Зарегистрироваться</router-link>
+        {{ $t("login.noAccount") }}?
+        <router-link to="/register">
+          {{ $t("login.register") }}
+        </router-link>
       </p>
     </div>
   </form>
@@ -81,13 +83,16 @@ import {
 } from "@/validation/validationRules";
 import messages from "@/plugins/messages";
 import { setTitle } from "@/utils/title.utils";
+import { useI18n } from "vue-i18n";
 
 export default {
   created() {
-    setTitle("Логин");
+    const { t } = useI18n();
+    setTitle(t("login.title"));
   },
   setup() {
-    return { v$: useVuelidate() };
+    const { t } = useI18n();
+    return { v$: useVuelidate(), t };
   },
   data() {
     return {
@@ -123,7 +128,7 @@ export default {
           email: this.form.email,
           password: this.form.password,
         });
-        setTitle("Счёт");
+        setTitle(this.t("home.bill"));
         this.$router.push("/");
       } catch (e) {}
     },

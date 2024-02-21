@@ -2,11 +2,13 @@
   <template v-if="isCategoriesEmpty">
     <div class="center">
       <div class="margin">
-        <p class="card-title">Нет категорий</p>
+        <p class="card-title">{{ $t("record.noCategories") }}</p>
       </div>
       <div>
         <router-link to="/categories">
-          <a class="btn waves-effect waves-light">новая категория</a>
+          <a class="btn waves-effect waves-light">{{
+            $t("record.newCategory")
+          }}</a>
         </router-link>
       </div>
     </div>
@@ -15,7 +17,9 @@
     <form class="form" @submit.prevent="newRecord">
       <div class="input-field">
         <select v-model="selectedCategory" ref="selectRef">
-          <option value="" disabled selected>Выберите свой вариант</option>
+          <option value="" disabled selected>
+            {{ $t("record.yourOption") }}
+          </option>
           <option
             v-for="category in categories"
             :key="category.name"
@@ -24,7 +28,7 @@
             {{ category.name }}
           </option>
         </select>
-        <label>Выберите категорию</label>
+        <label>{{ $t("record.selectCategory") }}</label>
       </div>
 
       <p>
@@ -36,7 +40,7 @@
             value="income"
             v-model="selectedType"
           />
-          <span>Доход</span>
+          <span>{{ $t("record.income") }}</span>
         </label>
       </p>
 
@@ -49,13 +53,15 @@
             value="outcome"
             v-model="selectedType"
           />
-          <span>Расход</span>
+          <span>{{ $t("record.outcome") }}</span>
         </label>
       </p>
 
       <div class="input-field">
         <input id="amount" type="number" v-model.number="limit" />
-        <label :class="{ active: limit !== '' }" for="amount">Сумма</label>
+        <label :class="{ active: limit !== '' }" for="amount">
+          {{ $t("record.amount") }}
+        </label>
         <span
           v-for="(error, errorType) in v$.limit.$errors"
           :key="errorType"
@@ -66,9 +72,9 @@
 
       <div class="input-field">
         <input id="description" type="text" v-model.trim="recordName" />
-        <label :class="{ active: recordName !== '' }" for="description"
-          >Описание</label
-        >
+        <label :class="{ active: recordName !== '' }" for="description">{{
+          $t("record.description")
+        }}</label>
         <span
           v-for="(error, errorType) in v$.name.$errors"
           :key="errorType"
@@ -78,7 +84,7 @@
       </div>
 
       <button class="btn waves-effect waves-light" type="submit">
-        Создать
+        {{ $t("record.create") }}
         <i class="material-icons right">send</i>
       </button>
     </form>

@@ -14,7 +14,7 @@
 
 <script setup>
 import { useRouter, useRoute } from "vue-router";
-import { defineProps, ref, watchEffect } from "vue";
+import { defineProps, ref, onBeforeMount } from "vue";
 import { setTitle } from "@/utils/title.utils";
 import { useI18n } from "vue-i18n";
 
@@ -33,14 +33,16 @@ const navigationItems = ref([
   { label: "sidenav.categories", path: "/categories" },
 ]);
 
+onBeforeMount(() => {
+  const initialPath = router.currentRoute.value.path;
+  const item = navigationItems.value.find(i => i.path === initialPath);
+  if (item) {
+    setTitle(t(item.label));
+  }
+});
+
 function navigateTo(item) {
   router.push(item.path);
   setTitle(t(item.label));
 }
-
-watchEffect(() => {
-  navigationItems.value.forEach(item => {
-    setTitle(t(item.label));
-  });
-});
 </script>

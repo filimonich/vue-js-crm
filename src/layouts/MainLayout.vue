@@ -11,7 +11,7 @@
       <router-link
         class="btn-floating btn-large blue"
         to="/record"
-        v-tooltip="$t('other.createNewRecord')"
+        v-tooltip="tooltipText"
       >
         <i class="large material-icons">add</i>
       </router-link>
@@ -23,7 +23,10 @@
 import { ref, watch } from "vue";
 import Navbar from "@/components/navigation/Navbar";
 import Sidenav from "@/components/navigation/Sidenav";
+import { useI18n } from "vue-i18n";
 
+const { t } = useI18n();
+const tooltipText = ref(t("other.createNewRecord"));
 const isSidenavOpen = ref(true);
 const isFullContent = ref(false);
 const contentClass = ref("app-content");
