@@ -8,14 +8,14 @@
 import MainLayout from "@/layouts/MainLayout";
 import EmptyLayout from "@/layouts/EmptyLayout";
 import { useRoute } from "vue-router";
-import { ref, onMounted } from "vue";
+import { onMounted } from "vue";
 import Tr from "@/i18n/translation";
 
 const route = useRoute();
-const layout = ref(null);
 
 onMounted(() => {
   setHtmlLangAttribute();
+  initializeLocale();
 });
 
 function setHtmlLangAttribute() {
@@ -23,9 +23,27 @@ function setHtmlLangAttribute() {
   document.querySelector("html").setAttribute("lang", locale);
 }
 
-function getLayout() {
-  return route.meta.layout === "main" ? MainLayout : EmptyLayout;
+function initializeLocale() {
+  const userLocale = localStorage.getItem("user-locale");
+  if (userLocale) {
+    Tr.switchLanguage(userLocale);
+  } else {
+    toggleLocale();
+  }
 }
+
+const toggleLocale = () => {
+  const newLocale = Tr.getCurrentLanguage() === "ru" ? "en" : "ru";
+  updateLocale(newLocale);
+};
+
+const updateLocale = newLocale => {
+  Tr.switchLanguage(newLocale);
+  localStorage.setItem("user-locale", newLocale);
+};
+
+const getLayout = () =>
+  route.meta.layout === "main" ? MainLayout : EmptyLayout;
 </script>
 
 <style lang="scss">

@@ -34,14 +34,7 @@
 </template>
 
 <script setup>
-import {
-  getCurrentInstance,
-  ref,
-  computed,
-  onMounted,
-  onUpdated,
-  watchEffect,
-} from "vue";
+import { getCurrentInstance, ref, computed, onMounted, watchEffect } from "vue";
 import { useStore } from "vuex";
 import { useVuelidate } from "@vuelidate/core";
 import { getNameValidationRules } from "@/validation/validationRules";
@@ -65,23 +58,16 @@ const toggleLocale = () => {
 
 onMounted(() => {
   const userLocale = localStorage.getItem("user-locale");
-  if (userLocale) {
-    Tr.switchLanguage(userLocale);
-  } else {
+  if (!userLocale) {
     toggleLocale();
+  } else {
+    Tr.switchLanguage(userLocale);
   }
+  M.FormSelect.init(document.querySelectorAll("select"));
 });
 
 watchEffect(() => {
   profileName.value = auth.value?.name || "Loading...";
-});
-
-onMounted(() => {
-  M.FormSelect.init(document.querySelectorAll("select"));
-});
-
-onUpdated(() => {
-  M.FormSelect.init(document.querySelectorAll("select"));
 });
 
 const rules = {

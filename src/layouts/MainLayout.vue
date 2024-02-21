@@ -20,7 +20,7 @@
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
+import { ref, watchEffect, watch } from "vue";
 import Navbar from "@/components/navigation/Navbar";
 import Sidenav from "@/components/navigation/Sidenav";
 import { useI18n } from "vue-i18n";
@@ -30,6 +30,13 @@ const tooltipText = ref(t("other.createNewRecord"));
 const isSidenavOpen = ref(true);
 const isFullContent = ref(false);
 const contentClass = ref("app-content");
+const someDynamicValue = ref("");
+
+watchEffect(() => {
+  tooltipText.value = someDynamicValue.value
+    ? someDynamicValue.value
+    : t("other.createNewRecord");
+});
 
 const toggleSidenav = () => {
   isSidenavOpen.value = !isSidenavOpen.value;
