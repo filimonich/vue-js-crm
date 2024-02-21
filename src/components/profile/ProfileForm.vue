@@ -57,12 +57,9 @@ const toggleLocale = () => {
 };
 
 onMounted(() => {
-  const userLocale = localStorage.getItem("user-locale");
-  if (!userLocale) {
-    toggleLocale();
-  } else {
-    Tr.switchLanguage(userLocale);
-  }
+  const userLocale =
+    localStorage.getItem("user-locale") || Tr.guessDefaultLocale();
+  Tr.switchLanguage(userLocale);
   M.FormSelect.init(document.querySelectorAll("select"));
 });
 

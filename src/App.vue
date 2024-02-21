@@ -8,14 +8,30 @@
 import MainLayout from "@/layouts/MainLayout";
 import EmptyLayout from "@/layouts/EmptyLayout";
 import { useRoute } from "vue-router";
-import { onMounted } from "vue";
+import { ref, onMounted } from "vue";
 import Tr from "@/i18n/translation";
+import { useI18n } from "vue-i18n";
 
+const { t, locale } = useI18n();
 const route = useRoute();
+const layout = ref(null);
 
 onMounted(() => {
   setHtmlLangAttribute();
-  initializeLocale();
+});
+
+const toggleLocale = () => {
+  const newLocale = locale.value;
+  Tr.switchLanguage(newLocale);
+  localStorage.setItem("user-locale", newLocale);
+};
+
+onMounted(() => {
+  const userLocale =
+    localStorage.getItem("user-locale") || Tr.guessDefaultLocale();
+  Tr.switchLanguage(userLocale);
+  M.FormSelect.init(document.querySelectorAll("select"));
+  toggleLocale();
 });
 
 function setHtmlLangAttribute() {
@@ -23,27 +39,9 @@ function setHtmlLangAttribute() {
   document.querySelector("html").setAttribute("lang", locale);
 }
 
-function initializeLocale() {
-  const userLocale = localStorage.getItem("user-locale");
-  if (userLocale) {
-    Tr.switchLanguage(userLocale);
-  } else {
-    toggleLocale();
-  }
+function getLayout() {
+  return route.meta.layout === "main" ? MainLayout : EmptyLayout;
 }
-
-const toggleLocale = () => {
-  const newLocale = Tr.getCurrentLanguage() === "ru" ? "en" : "ru";
-  updateLocale(newLocale);
-};
-
-const updateLocale = newLocale => {
-  Tr.switchLanguage(newLocale);
-  localStorage.setItem("user-locale", newLocale);
-};
-
-const getLayout = () =>
-  route.meta.layout === "main" ? MainLayout : EmptyLayout;
 </script>
 
 <style lang="scss">
