@@ -1,4 +1,5 @@
-# vue-js-crm
+## link to CRM
+https://vue-js-crm-fss.web.app/register
 
 ## Project setup
 ```
